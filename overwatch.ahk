@@ -170,37 +170,92 @@ from group 6, pick a voiceline to be entered with alien in whisper mode
 
 
 ; Chat Number 1 - 'Normal'
-+Numpad7::Chat := 1
+^Numpad7::
+Chat := 1
+ToolTip,Set chatmode to NORMAL...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 2 - 'Yell'
-+Numpad8::Chat := 2
+^Numpad8::
+Chat := 2
+ToolTip,Set chatmode to YELL (y)...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 3 - 'Whisper'
-+Numpad9::Chat := 3
+^Numpad9::
+Chat := 3
+ToolTip,Set chatmode to WHISPER (w)...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 4 - 'Radio - Normal'
-+Numpad4::Chat := 4
+^Numpad4::
+Chat := 4
+ToolTip,Set chatmode to RADIO NORMAL (r)...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 5 - 'Radio - Yell'
-+Numpad5::Chat := 5
+^Numpad5::
+Chat := 5
+ToolTip,Set chatmode to RADIO YELL (ry)...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 6 - 'Radio - Whisper'
-+Numpad6::Chat := 6
+^Numpad6::
+Chat := 6
+ToolTip,Set chatmode to RADIO WHISPER (rw)...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 7 - 'Alien - Normal'
-+Numpad1::Chat := 7
+^Numpad1::
+Chat := 7
+ToolTip,Set chatmode to ALIEN NORMAL (ali)...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 8 - 'Alien - Yell'
-+Numpad2::Chat := 8
+^Numpad2::
+Chat := 8
+ToolTip,Set chatmode to ALIEN YELL (aliy)...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 9 - 'Alien - Whisper'
-+Numpad3::Chat := 9
+^Numpad3::
+Chat := 9
+ToolTip,Set chatmode to ALIEN WHISPER (aliw)...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 10 - 'LOOC'
-+Numpad0::Chat := 10
+^Numpad0::
+Chat := 10
+ToolTip,Set chatmode to LOCAL OOC...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 ; Chat Number 11 - 'OOC'
-+NumpadDot::Chat := 11
+^NumpadDot::
+Chat := 11
+ToolTip,Set chatmode to GLOBAL OOC...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 
 ; OTA Voiceline Hotkeys (to set from group of OTA voiceline(s))
@@ -427,9 +482,18 @@ MMR(Group)
 	}
 	*/
 	; because arrays start from 0
-	SlashRoll := 0
-	Random, SlashRoll, 0, E
+	SlashRoll := 1
+	Random, SlashRoll, 1, E
+	;rand debug test
+	/*
+	X := ListItem(1, Barack)
+	MsgBox % X
+	MsgBox % SlashRoll
 
+	X := ListItem(0, Barack)
+	MsgBox % X
+	MsgBox % SlashRoll
+	*/
 	/* debug test
 
 	butt := 5
@@ -660,6 +724,7 @@ RepositionGameWindow(){
 }
 */
 
+/*
 SoundTest(){
 	SoundPlay,Sounds/Error.mp3
 	Sleep,500
@@ -670,6 +735,7 @@ SoundTest(){
 	SoundPlay,Sounds/Bruh.mp3
 	return
 }
+*/
 
 PingWillardServer(){
 	;Fire up a quick command propmpt, pinging the game server until closed.
