@@ -10,6 +10,8 @@ The overwatch.exe also automatically extracts the files in the files folder, so 
 Source code for files, extraction, program, et cetera., are all available to view above!
 
 hotkeys:
+To pause/halt program, press "Page Up"
+To exit program, press "End"
 ```
 ; Chat Hotkeys (to set mode of communication from 1 to 11)
 ; The "^" character in front of hotkeys, for example "^Numpad7" basically means, 
