@@ -139,7 +139,7 @@ Loop, Read, ota.txt
 
 
 ; Pause program
-Pause:: Pause
+PgUp:: Pause
 ; Reload program
 Home:: Reload
 ; Exits program
@@ -740,20 +740,20 @@ OTA(Group, Chat)
 	VC=% E . P
 
 	; ---
-	/*
+	
 	Loop {
-		
+		SendInput,y
 		ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
 		Sleep,100
 	} until CheckForChatBox(false)
-	*/
-	SendInput,y
-	SendInput,%VC%{Enter}
-	/*
 	
+	SendInput,%VC%{Enter}
+	
+	/*
 	SendInput, %E%
 	SendInput, %P%{Enter}
 	*/
+	
 	Menu,Tray,Icon, Sprites/Gmod.ico
 	ToolTip
 	return
