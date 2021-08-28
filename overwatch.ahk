@@ -103,14 +103,17 @@ Chat := 4
 
 
 ;Global hotkeys.
+
+
 Pause:: Pause
 Home:: Reload
 End:: ExitApp
-F5:: LaunchGmod()
-F6:: PingWillardServer()
+^F5:: LaunchGmod()
+^F6:: PingWillardServer()
 
 
 ;Roleplay hotkeys.
+
 
 /*
 Functionality: OTA(# voiceline group, # of chat type) [or Protec() TBA]
@@ -135,6 +138,8 @@ OTA() (or Protec() Args:
 }
 
 E.g. OTA(6, 9) <:: haha lmao ::>
+means
+from group 6, pick a voiceline to be entered with alien in whisper mode
 
 */
 
