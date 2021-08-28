@@ -1,6 +1,14 @@
 # overwatch-automated-voiceliner
 swag
 
+To use:
+1. Download "Overwatch.exe" from Releases tab or in main folder above.
+2. Run "Overwatch.exe"
+3. Done lol
+
+The overwatch.exe also automatically extracts the files in the files folder, so no worries
+Source code for files, extraction, program, et cetera., are all available to view above!
+
 hotkeys:
 ```
 ; Chat Hotkeys (to set mode of communication from 1 to 11)
