@@ -4,6 +4,7 @@
 <:: --- ::>
 
 Overwatch Automated Voiceliner by Tim Cook & GitHub user TrevorLaneRay.
+Modified to be compatible with a 1920x1080 game size.
 
 v0.1
 
@@ -45,8 +46,8 @@ GPL-3.0 license.
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 0.0.2
-Menu,Tray,Tip,Gmod Macros v.%Version%
+Version = 0.1
+Menu,Tray,Tip,Overwatch Automated Voiceliner v.%Version%
 Menu,Tray,Icon, Sprites/Gmod.ico
 
 /*
@@ -56,7 +57,7 @@ Menu,Tray,Icon, Sprites/Gmod.ico
 */
 if !A_IsAdmin {
 	;Ask user if we want to relaunch the script as Administrator.
-	MsgBox, 36, Relaunch as admin?, The script needs to be run as administrator in order to send keyboard presses and mouse input.`n`nShall we relaunch the script as administrator for you?`n(If not`, we'll just exit the script.)
+	MsgBox, 36, Relaunch as admin?, The script needs to be run as administrator in order to send keyboard presses and mouse input.`n`nShall we relaunch the script as administrator for you?`n(If not`, we'll just exit the script. {The source code is literally available to view if you think its a virus lmao, up to u})
 	IfMsgBox,Yes
 	{
 		;Launch a new instance of the script, this time with admin privilege.
@@ -87,35 +88,450 @@ if !A_IsAdmin {
 	|	vk07sc000: Guide Button (Does this even work in Windows 10?)
 	\=======================================================================/
 */
-;~ Script control hotkeys.
-Pause:: Pause
-+F12:: Reload
-^+F12:: ExitApp
 
 ;~ Function Test Hotkeys:
-;~ F12:: MNDecrypt("AwMOGQsGNh0RSwIBBjESFlMDAHMKARMKFjZL","SooperSeekritPasswo") ;Max password length is 19char?
+;~ F12:: MNDecrypt("22decb4e5469a3798b6c51bb5cfefbb2","EroticFartRoleplay") ;Max password length is 19char?
 ;~ Plaintext: "Plaintext phrase to encode."
-;~ Key: "SooperSeekritPasswo"
-;~ Ciphertext: "AwMOGQsGNh0RSwIBBjESFlMDAHMKARMKFjZL"
+;~ Key: "EroticFartRoleplay"
+;~ Ciphertext: "22decb4e5469a3798b6c51bb5cfefbb2"
 
 ;Global hotkeys.
+Pause:: Pause
+Home:: Reload
+End:: ExitApp
 F5:: LaunchGmod()
-F6:: PingCivilCityServer()
-Joy4:: VCMinerManager(true,false) ;(Single-use on-demand trigger of VCMiner restart, intended for game controller use when reclined, away from keyboard. Will bring focus back to active window when done. (My favorite mode.))
+F6:: PingWillardServer()
 
-;Ingame hotkeys.
+
+;Roleplay hotkeys.
+
+/*
+Functionality: OTA(# voiceline group, # of chat type) [or Protec() TBA]
+
+OTA() (or Protec() Args:
+#1 {
+	1 through 16
+}
+,
+#2 {
+1: normal, 
+2: yell, 
+3: whisper, 
+4: radio normal, 
+5: radio yell, 
+6: radio normal; 
+7: alien lmao, 
+8: alien yell lmao, 
+9: alien whisper lmao, 
+10: LOOC idk why tho
+11: OOC
+}
+
+E.g. OTA(6, 9) <:: haha lmao ::>
+
+*/
+
+; make sure OTA() or something else sets this variable
+; Default chat variable indicating /r (4: radio normal)
+Chat = 4
+
+
+; Number 1 - 'Suppressing, go sharp, prosecuting, engaging, cover'
+Numpad2::OTA(1, Chat)
+
+; Number 2 - 'Contact, contact confirm, contact confirm2, target my radial, target 1, go sharp2, viscon'
+Numpad1::OTA(2, Chat)
+
+; Number 3 - 'Closing, inbound, move in, cover me, unit closing, unit in'
+Numpad3::OTA(3, Chat)
+
+; Number 4 - 'Lost contact, motion check, stay alert, team deployed, cleanup, ready weapons, ready extractors, ready charges, fix sight lines, contain proceed'
+NumpadDot::OTA(4, Chat)
+
+; Number 5 - 'One down, heavy resistance, request reinforcement, harden position'
+NumpadDiv::OTA(5, Chat)
+
+; Number 6 - 'Extractor away, extractor live, flash flash flash, flush'
+Numpad7::OTA(6, Chat)
+
+; Number 7 - 'Displace, ripcord, ripcord 2'
+NumpadMult::OTA(7, Chat)
+
+; Number 8 - 'Target compromised, got him now, wrap up'
+Numpad8::OTA(8, Chat)
+
+; Number 9 - 'necrotics, infestation zone'
+Numpad4::OTA(9, Chat)
+
+; Number 10 - 'infestation zone, parasitics, parasites'
+Numpad5::OTA(10, Chat)
+
+; Number 11 - 'Cleaned, contained, sector control, secure, delivered'
+NumpadAdd::OTA(11, Chat)
+
+; Number 12 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
+Numpad0::OTA(12, Chat)
+
+; Number 13 - 'Possible hostiles, ready weapons, prep contact, weapon off, stay alert'
+NumpadSub::OTA(13, Chat)
+
+; Number 14 - 'Affirmative, affirmative2, copy, copy that'
+NumpadEnter::OTA(14, Chat)
+
+/*
+Number 15, burger king footlettuce the last thing you want in your burgerking burger is someone elses foot fungus admittedly he had shoes on
+
+Sector secure, no movement, position clear, reporting clear, report all radials, no viscon
+*/
+Numpad6::OTA(15, Chat)
+
+; Number 16 - Bouncer, flare down
+Numpad9::OTA(16, Chat)
+
+
+;Game hotkeys.
 #IfWinActive:: Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
-NumpadDiv:: HashDecoder()
+;NumpadDiv:: HashDecoder()
 NumpadSub:: HoldMouseButton("LButton") ;Holds the left mouse button down.
 F7:: DropBalance(true) ;Drops currently held /balance, and optionally makes a quick call to cops.
 F8:: ReportDeathAsRDM(false) ;Manual hotkey to report RDM.
-F9:: MaxNetConfigurator("DerpyWhooves","block",true,"761RPX88W6U16RNG33784B3A5Y34HUDH") ;Configures MaxNet terminal after deployment, BLOCKING outbound hacks. (assumes console program is onscreen).
-+F9:: MaxNetConfigurator("DerpyWhooves","allow",true,"761RPX88W6U16RNG33784B3A5Y34HUDH") ;Configures MaxNet terminal after deployment, ALLOWING outbound hacks.(assumes console program is onscreen).
+
 F10:: BitMinerFueler() ;Keeps bitminer fueled. (This is just a stupid fueler; it won't defend your base for you. Don't run this AFK.)
 F11:: VCMinerManager(true,false) ;Triggers a single-use manual restart of VCMiners.
 +F11:: VCMinerManager(false,true,"timed") ;Starts AFK management of VCMiners (for extended breaks like laundry, officework, etc).
 F12:: AutoReloadWeapon()
 ^F12:: AutoAmmoBuyer(2000)
+
+
+/*
+
+	/=======================================================================\
+	| The Nexus Armory
+	| "I love ERP." -Thomas Newcastle
+	|
+	| VC [Group] Formatting [.txt, stored in same directory as script]:        | "voiceline,voiceline,voiceline"
+	|
+	| {if u do "voiceline, voiceline, voiceline", then voicelines will look    | like "/r voiceline          voiceline" lmao}
+	|
+	\=======================================================================/
+
+*/
+
+/*
+	Approach 1 [] - Each line represents a voiceline group, use ", " as delimiting character and parse pre- or curr OTA function cycle
+
+	Approach 2 [] - Parse & create individual voiceline group arrays and using each individual voiceline group as objects of which are stored within a object-oriented group-array, that is then stored inside of the 'master' OOP array that has the group-specific OOP arrays containing voiceline-arrays with each element of index containing exactly one voiceline to be used/parsed
+
+	Approach 3 [alpha] - Make Approach much less complicated by just making voiceline group arrays, specific to group, but not contained within object-oriented program structure because that is mindboggling and butthole poop
+*/
+
+OTAVoicelines := [] ; Overwatch Deployment
+
+; VCGroup := [] ; HPR-1
+
+OTAVoicelines[e] := A_LoopField
+OTAVoicelines[e, r] := A_LoopReadLine
+
+P := 0 ; could just use OTAVoicelines.MaxIndex() but P is good since it spells out "ERP" haha lmao
+
+Loop, Read, %A_AhkPath%\ota.txt
+{
+	Loop, parse, A_LoopReadLine, %A_Comma%
+	{
+		OTAVoicelines[P, %A_Index%] := %A_LoopField%
+		P += 1
+	}
+	
+	;OTAVoicelines[P] := A_LoopReadLine
+}
+
+; OTAVoicelines[VoicelineGroup, VoicelinesInsideGroup]
+; Starts from OTAVoicelines[0, 0] to OTAVoicelines[n, n]
+
+;debug debug debug 
+; ---
+
+Loop % P
+{
+	; VC := OTAVoicelines[A_Index]
+	
+	For idx, P
+	{
+		debugcycle := 0
+
+		For idx2, element in OTAVoicelines[P]
+		{
+			MsgBox % OTAVoicelines[P, idx2]
+		}
+		
+		obama := idx
+		obama += 1
+		MsgBox % obama ; first run: ota[0] but obama = 1 as P is default-set to 0
+	} 
+
+	; MsgBox % "number " . %A_Index% . " burger king foot lettuce " . OTAVoicelines[A_INDEX] ; debug debug debug
+}
+
+; ---
+
+/*
+
+---
+
+For idx, element in OTAVoicelines
+{
+	; Debug purposes
+	MsgBox % "Voiceline group #"
+}
+
+---
+
+*/
+
+
+/*
+	/=======================================================================\
+	|MMR Procedures & Radio Cohesion
+	|"Rank Leader, reminder, 100 sterilized credits qualifies non-mechanical |reproduction simulation."
+	\=======================================================================/
+*/
+
+MMR(Group)
+{
+	E = OTAVoicelines[Group].MaxIndex(1)
+	R = OTAVoicelines[Group].Length(1)
+	P = OTAVoicelines[Group].Count(1)
+
+	; ERP haha lmao
+	
+	; case 1 - empty voiceline array
+	If (E < 0)
+	{
+		MsgBox % "bruh u did not load in any voice lines lmfao moron L L L L L"
+		return "[ERROR 1] "
+	}
+
+	; case 2 - delimiter issue which is a ','
+	If (R != P)
+	{
+		MsgBox % "bruh u probably double-spaced a line or some shit cause it looks like one or more lines are empty wtf what r u doin u pp head lol"
+		return "[ERROR 2] "
+	}
+
+	Obama := R
+	Obama += -1 
+
+	; case 0 - if there are no voicelines in the specified group lmao
+	if (Obama < 0)
+	{
+		MsgBox % "wtf there are no voicelines in this group wtf what r u smokin bro"
+		return "[ERROR 0] "
+	}
+
+	; because arrays start from 0
+
+	Random, SlashRoll, 0, Obama
+
+	; debug test
+
+	butt := 5
+
+	For idx69, butt
+	{
+		SlashRoll2 := 0
+		Random, SlashRoll2, 0, Obama
+		MsgBox % OTAVoiceline[Group, SlashRoll2]
+	}
+
+	Bruh := true
+	For each, value in OTAVoiceline[Group, SlashRoll]
+	{
+		if !(value == "")
+		{
+			bruh := false
+
+			Break
+		}
+	}
+
+	; case 3 - slashRoll, the randomly generated number for voiceline, does not exist kind of situation lel if (OTAVoiceline[Group, SlashRoll])
+	if (Bruh != true)
+	{
+		MsgBox % "wtf MMR procedure was bad, rogue erotic strider roleplay engaged haha"
+		return "[ERROR 3] "
+	}
+
+	; else
+
+	return OTAVoiceline[Group, SlashRoll]
+
+	/*
+
+	--- ignore lol
+
+	; P = OTAVoiceLines[barack].MaxIndex() ; or element in OTAVoiceLines[barack] 
+		
+
+	*/
+}
+
+/*
+1: normal, 
+2: yell, 
+3: whisper, 
+4: radio normal, 
+5: radio yell, 
+6: radio normal; 
+7: alien lmao, 
+8: alien yell lmao, 
+9: alien whisper lmao, 
+10: LOOC idk why tho
+11: OOC
+*/
+
+Cohesion(Chat)
+{
+	if (Chat < 0)
+	{
+		MsgBox % "somehow u bypassed the first check for a non-positive chat lmao"
+		return 100
+	}
+	if (Chat == 1)
+	{
+		return ""
+	}
+	if (Chat == 2)
+	{
+		return "/y "
+	}
+	if (Chat == 3)
+	{
+		return "/w "
+	}
+	if (Chat == 4)
+	{
+		return "/r "
+	}
+	if (Chat == 5)
+	{
+		return "/ry "
+	}
+	if (Chat == 6)
+	{
+		return "/rw "
+	}
+	if (Chat == 7)
+	{
+		return "/ali "
+	}
+	if (Chat == 8)
+	{
+		return "/aliy "
+	}
+	if (Chat == 9)
+	{
+		return "/aliw "
+	}
+	if (Chat == 10)
+	{
+		return "/looc "
+	}
+	if (Chat == 11)
+	{
+		return "/ooc "
+	}
+	if (Chat > 11)
+	{
+		MsgBox % "bruh chat type higher than eleven"
+		return 200
+	}
+}
+
+
+
+/*
+	/=======================================================================\
+	|Overwatch Functions
+	|For automated OTA epic memery.
+	|TBA: Modify parameters to OTA(Group, Chat, VoicelineCount)
+	\=======================================================================/
+*/
+
+
+
+OTA(Group, Chat)
+{
+	
+	Menu,Tray,Icon, Sprites/GmodActive.ico
+	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
+	;FormatTime, timeString, A_NowUTC,hh:mm:ss tt
+
+	; the core programming
+	; ---
+
+	if (Group < 0)
+	{
+		;ampMessageString=% "[[ brb afk"
+		MsgBox % "wtf u somehow entered a fuckin negative number for VC group, u headass"
+		return 1
+	} 
+
+	if (Chat < 0)
+	{
+		MsgBox % "wtf u somehow entered a fuckin negative number for chat-type, u headass"
+		return 2
+	}
+
+	E := Cohesion(Chat)
+
+	R := Group
+	R += -1
+
+	P := MMR(R)
+	
+	/*
+
+		If OTA (1, 1)
+			initialize game window structures
+			check group/chat < 0 [cases 1 and 2]
+			then initialize E.R.P. variables
+			then let R equal 1 then minus 1 for 0, since arrays start at 0
+			E equals the returned prefix of message with radio/message/[L]OOC commands
+			P equals the returned randomly picked voiceline from group (technically) 0 {as stored index-wise in the VC array} [which is 1, the first VC group]
+			Let VC equal the full message
+			then loop:
+				press y
+				helpful info that says to stop pressing stuff for voice line
+			...until Chatbox-open is confirmed
+
+			then, after chatbox-open is confirmed, input/type the full VC then press enter key
+	*/
+
+	VC=% E . P
+
+
+	; ---
+	Loop {
+		SendInput,y
+		ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
+		Sleep,2000
+	} until CheckForChatBox(false)
+	SendInput,%VC%{Enter}
+	Menu,Tray,Icon, Sprites/Gmod.ico
+	ToolTip
+	return
+
+}
+
+/*
+	/=======================================================================\
+	|Civil Protection Functions
+	|For automated Civil Protection epic memery.
+	\=======================================================================/
+*/
+
+
+
 
 /*
 	/=======================================================================\
@@ -123,6 +539,7 @@ F12:: AutoReloadWeapon()
 	|For script testing & etc.
 	\=======================================================================/
 */
+
 ImageSearchTest(){
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
 	;Note the "+2" on the coords - this is due to the windowed mode of the game having an offset of 2px on the x-axis...
@@ -146,19 +563,19 @@ SoundTest(){
 	return
 }
 
-PingCivilCityServer(){
+PingWillardServer(){
 	;Fire up a quick command propmpt, pinging the game server until closed.
 	;Useful to quickly figure out if the server is reachable from clientside.
-	Run,cmd /C "ping cc.civilservers.net -n -1"
+	Run,cmd /C "ping 178.239.172.10 -n -1"
 	return
 }
 
 LaunchGmod(){ ;Checks if Gmod is running, and if not, offers to launch it. If the window is present, but hidden, it will bring it to the front, and snap it to the top-left corner of the screen.
 	IfWinNotExist,Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
 	{
-		MsgBox, 36, Launch Garry's Mod?, There is no instance of Garry's Mod running.`nShould we launch it and connect to Civil City RP?
+		MsgBox, 36, Launch Garry's Mod?, There is no instance of Garry's Mod running.`nShould we launch it and connect to Willard Networks?
 		IfMsgBox,Yes
-			Run,steam://connect/cc.civilservers.net:27015/
+			Run,steam://connect/178.239.172.10:27015/
 		IfMsgBox,No
 			return
 	}
@@ -182,7 +599,7 @@ CheckIfDisconnected(reconnect:=false,irrelevantDisconnection:=false){
 	if !ErrorLevel {
 		SoundPlay,Sounds/InceptionNoise.mp3
 		if reconnect {
-			Run,steam://connect/cc.civilservers.net:27015/
+			Run,steam://connect/178.239.172.10:27015/
 			;TODO: Add functionality to determine that we actually make it back into the game after attempting to reconnect
 			if !irrelevantDisconnection { ;Return true even if we were able to reconnect.
 				return true
@@ -211,6 +628,9 @@ HoldMouseButton(mouseButton:="LButton"){
 }
 
 CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returning true/false, and optionally closes it. (Returns false once sucessfully closed. Returns true if not able to close.)
+	
+	/*
+
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
 	ImageSearch,blahX,blahY,40+2,741,71+2,752, *80 Sprites/ChatBoxActive.fw.png
 	if !ErrorLevel {
@@ -234,6 +654,13 @@ CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returnin
 		return false
 	}
 	return
+	
+	note: not going to use this since its calibrated for 1600 x 900 and its way too hardcore for a hl2rp macro thing lmao
+	
+	*/
+
+	; Sleep, 2000
+	return false
 }
 
 CheckIfDead(respawn:=false, irrelevantDeath:=false,reportDeathToAdmins:=false){
@@ -291,29 +718,29 @@ CheckIfDead(respawn:=false, irrelevantDeath:=false,reportDeathToAdmins:=false){
 	return
 }
 
-ReportDeathAsRDM(indicateAFK:=true){ ;Quickly fires off an admin chat message, reporting RDM.
-	;~ Optionally indicates that player was AFK at time of death; useful for scripted functionality where player is AFK, but wants to report any death.
-	;~ TODO: Add additional functionality to handle Admin Sit menu if it appears. (Unsure whether its absence after @-message is a bug.)
-	;~ TODO: Possible to retrieve name of person comitting RDM from the console? RegEx the last few recent lines for an "x killed player" message?
+Amputate(indicateAFK:=true){ ;Initiates a /amputate message automatically, reporting PK.
+	;~ Requires that player is not AFK
+	
 	Menu,Tray,Icon, Sprites/GmodActive.ico
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
 	FormatTime, timeString, A_NowUTC,hh:mm:ss tt
 	if indicateAFK {
-		deathMessageString=% "@ AutoReport: RDM'd at " . timeString . " UTC; was AFK at time of death."
+		ampMessageString=% "[[ brb afk"
 	} else {
-		deathMessageString=% "@ RDM'd at " . timeString . " UTC"
+		ampMessageString=% "/amputate " . timeString . " UTC by Overwatch"
 	}
 	Loop {
 		SendInput,y
 		ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
 		Sleep,2000
 	} until CheckForChatBox(false)
-	SendInput,%deathMessageString%{Enter}
+	SendInput,%ampMessageString%{Enter}
 	Menu,Tray,Icon, Sprites/Gmod.ico
 	ToolTip
 	return
 }
 
+/* Note: might use for something else idk lmao
 DropBalance(callPolice:=false){ ;A quick-response money dropper for use in mugging scenarios. Optionally places a quick call to police.
 	Menu,Tray,Icon, Sprites/GmodActive.ico
 	SendInput,{NumpadDiv}
@@ -359,6 +786,7 @@ DropBalance(callPolice:=false){ ;A quick-response money dropper for use in muggi
 	Menu,Tray,Icon, Sprites/Gmod.ico
 	return
 }
+*/
 
 HashDecoder(){
 	global ;Necessary to work with clipboard values.
@@ -424,245 +852,6 @@ HashDecoder(){
 	return
 }
 
-/*
-	/=======================================================================\
-	|Dubious Functions
-	|	Features that are likely to be seen seen as cheating ingame, and should not be used except for experiments.
-	\=======================================================================/
-*/
-AntiAFK(){ ;Prevents most AFK-detection mechanisms from registering you as idle in roles that are stationary, and often idle.
-	;This is designed to be used while sitting; it will toggle third person, instead of you being seen repeatedly crouching.
-	;Intended for use as roles that are AFK-limited, but have periods where it may seem like player is AFK, i.e.: sitting at desk as mayor.
-	;	Apparently the system will auto-demote you even while talking to others, and looking around, etc. Seems to be based on x/y/z movement.
-	;	Since roles will auto-demote if player stands still, desk roles often end up in false demotions. This is an attempt to resolve that.
-	;Not intended to facilitate actual AFK players, but rather to remedy the pains of true roleplayers. (Deskbound mayors, gov't agents, etc.)
-	Menu,Tray,Icon, Sprites/GmodActive.ico
-	Loop {
-		WinGetActiveStats,gameWinTitle,gameWinWidth,gameWinHeight,gameWinX,gameWinY
-		IfWinNotActive,Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
-		{
-			ToolTip
-			break
-		}
-		ToolTip,Toggling thirdperson view...,gameWidth/2,0
-		SendInput, {Ctrl Down}
-		Random,buttonToggleWait,500,750
-		Sleep,buttonToggleWait
-		SendInput, {Ctrl Up}
-		Random,buttonToggleWait,1000,2000
-		Sleep,buttonToggleWait
-		SendInput, {Ctrl Down}
-		Random,buttonToggleWait,500,750
-		Sleep,buttonToggleWait
-		SendInput, {Ctrl Up}
-		Sleep,64
-		Random,waitTime,180000,200000
-		ToolTip,Delaying %waitTime%ms before toggling thirdperson view...,gameWidth/2,0
-		Sleep,waitTime
-	}
-	return
-}
-
-MaxNetConfigurator(routerPassword:="SooperSeekritPassword",blockOrAllowOutboundHacks:="block",configMiners:=true, walletAddress:="761RPX88W6U16RNG33784B3A5Y34HUDH"){ ;Expedites the router configuration for MaxNet deployment.
-	Menu,Tray,Icon, Sprites/GmodActive.ico
-	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
-	MouseClick,Left
-	ToolTip,Waiting for MaxNet console...,gameWidth/2,0
-	Loop{
-		ImageSearch,blahX,blahY,674+2,438,711+2,447, *80 Sprites/MaxNetConsoleBoxTitle.fw.png
-	} until !ErrorLevel
-	ToolTip,Configuring MaxNet settings...,gameWidth/2,0
-	if configMiners {
-		Sendinput,vcmine set_wallet %walletAddress%{Enter}
-		Sleep,1500
-		Sendinput,vcmine start{Enter}
-		Sleep,1500
-	}
-	Sendinput,router settings admin_password %routerPassword%{Enter}
-	Sleep,1500
-	Sendinput,router login %routerPassword%{Enter}
-	Sleep,1500
-	Sendinput,cls{Enter}
-	Sleep,1500
-	Sendinput,router settings hide_terminals true{Enter}
-	Sleep,1500
-	Sendinput,router firewall block MN_PROTOCOL_REMOTE{Enter}
-	Sleep,1500
-	Sendinput,router firewall block MN_PROTOCOL_REMOTE_ATTEMPT{Enter}
-	Sleep,1500
-	Sendinput,router firewall block MN_PROTOCOL_REMOTE_COMMAND{Enter}
-	Sleep,1500
-	Sendinput,router firewall block MN_PROTOCOL_MESSAGE{Enter}
-	Sleep,1500
-	Sendinput,router firewall block MN_PROTOCOL_MANAGER_SCAN{Enter}
-	Sleep,1500
-	Sendinput,router firewall %blockOrAllowOutboundHacks% MN_PROTOCOL_REMOTE out{Enter}
-	Sleep,1500
-	Sendinput,router firewall %blockOrAllowOutboundHacks% MN_PROTOCOL_REMOTE_ATTEMPT out{Enter}
-	Sleep,1500
-	Sendinput,router firewall %blockOrAllowOutboundHacks% MN_PROTOCOL_REMOTE_COMMAND out{Enter}
-	Sleep,1500
-	Sendinput,router firewall %blockOrAllowOutboundHacks% MN_PROTOCOL_MESSAGE out{Enter}
-	Sleep,1500
-	Sendinput,router firewall %blockOrAllowOutboundHacks% MN_PROTOCOL_MANAGER_SCAN out{Enter}
-	Sleep,1500
-	Sendinput,router settings firewall_enabled true{Enter}
-	Sleep,1500
-	Sendinput,firewall block MN_PROTOCOL_REMOTE{Enter}
-	Sleep,1500
-	Sendinput,firewall block MN_PROTOCOL_REMOTE_ATTEMPT{Enter}
-	Sleep,1500
-	Sendinput,firewall block MN_PROTOCOL_REMOTE_COMMAND{Enter}
-	Sleep,1500
-	Sendinput,firewall block MN_PROTOCOL_MESSAGE{Enter}
-	Sleep,1500
-	Sendinput,firewall block MN_PROTOCOL_MANAGER_SCAN{Enter}
-	Sleep,1500
-	Sendinput,firewall enable{Enter}
-	Sleep,1500
-	Sendinput,router settings admin_password %routerPassword%{Enter} ;Setting the password a second time here secures the router so that raiders can't divulge it through subsequent use of "router settings" on an unlocked pc.
-	Sleep,1500
-	Sendinput,cls{Enter}
-	Sleep,64
-	SendInput,{LAlt Down}
-	Sleep,64
-	SendInput,{LAlt Up}
-	ToolTip
-	Menu,Tray,Icon, Sprites/Gmod.ico
-	return
-}
-
-BitMinerFueler(){ ;Automatically keeps generator fueled. (Intended to be run with an empty generator on start.)
-	Menu,Tray,Icon, Sprites/GmodActive.ico
-	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
-	Loop {
-		Loop,4
-		{
-			CheckForChatBox(true) ;Close the chatbox if open; we can't use our keybind for /buybitminerfuel if it's open.
-			if CheckIfDead(true,false,false) {
-				ToolTip,Player died at %A_Now%,gameWidth/2,0
-				Menu,Tray,Icon, Sprites/Gmod.ico
-				return
-			}
-			ToolTip,Fueling... (%A_Index%x),gameWidth/2,0
-			Sendinput,v ;Change this to whatever key is bound to /buybitminerfuel
-			if (A_Index < 4) { ;Delays in between each spawning of fuel. (Except for after fourth one, since we don't need to respawn a fifth.)
-				Sleep 3000
-			}
-		}
-		CheckForChatBox(true)
-		if CheckIfDead(true,false,false) {
-			ToolTip,Player died at %A_Now%,gameWidth/2,0
-			Menu,Tray,Icon, Sprites/Gmod.ico
-			return
-		}
-		ToolTip,Waiting to refuel...,gameWidth/2,0
-		Sleep,241000 ;(Basically, 250s, minus the amount of time it actually takes to spawn the four fuel cans.)
-	}
-	ToolTip
-	Menu,Tray,Icon, Sprites/Gmod.ico
-	return
-}
-
-VCMinerManager(ManualToggle=false, keepGameFocused:=true, restartMode:="timed"){
-	;Basic AFK VCMiner management. Keeps VCMiners running. Best used while sitting in a chair prop, looking at the screen, and with keys equipped. (Can't use MaxNet computer while sitting if you have grav/physgun equipped.)
-	;ManualToggle is whether or not to treat this as one-off. If not keepGameFocused, we activate the previously active window. RestartMode (timed/reactive) chooses whether to restart at a fixed interval, or rather to react to a VCMiner stopping.
-	;~ TODO: Work on functionality for reactive triggering of vcmine start.
-	Menu,Tray,Icon, Sprites/GmodActive.ico
-	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
-	ToolTip
-	Loop {
-		IfWinNotActive,Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
-		{
-			if (!keepGameFocused) { ;If Gmod is not the aactive window, take note of the window that is active so we can return to it later.
-				WinGetActiveStats,activeWinTitle,activeWinWidth,activeWinHeight,activeWinX,activeWinY
-			}
-			LaunchGmod()
-		}
-		CheckForChatBox(true)
-		if CheckIfDead(true,false,false) {
-			ToolTip,Player died at %A_Now%,gameWidth/2,0
-			Menu,Tray,Icon, Sprites/Gmod.ico
-			return
-		}
-		if CheckIfDisconnected(true,false) {
-			ToolTip,Disconnected at %A_Now%...,gameWidth/2,0
-			Menu,Tray,Icon, Sprites/Gmod.ico
-			return
-		}
-		if InStr(restartMode, "reactive",true)
-		{
-			;~ Coordinates for the X1/Y1/X2/Y2 corners of each VCMiner's status display are set by the MouseGetPos on each corner, with the user guided by tooltips.
-			;~ We expect the user to have freed their cursor for this with F3, so that their view angle is fixed in place at their monitor while we specify VCMiner status indicator regions.
-			Loop,4
-			{
-				ToolTip,Move mouse to Miner #%A_Index%'s X1/Y1 and left-click...,gameWidth/2,0
-				KeyWait,LButton,D
-				KeyWait,LButton
-				MouseGetPos,miner%A_Index%X1,miner%A_Index%Y1
-				ToolTip,Move mouse to Miner #%A_Index%'s X2/Y2 and left-click...,gameWidth/2,0
-				KeyWait,LButton,D
-				KeyWait,LButton
-				MouseGetPos,miner%A_Index%X2,miner%A_Index%Y2
-			}
-			;~ These regions within the corners will be PixelSearched for the red color of a "Stopped" status. If found, the loop here will stop, and we proceed with firing up a "vcmine start."
-			ToolTip,Watching VCMiners' Status...,gameWidth/2,0
-			Loop{
-				PixelSearch,blahX,blahY,miner1X1,miner1Y1,miner1X2,miner1Y2,0xCB272F,30
-				if !ErrorLevel
-					break
-				Sleep,64
-				PixelSearch,blahX,blahY,miner2X1,miner2Y1,miner2X2,miner2Y2,0xCB272F,30
-				if !ErrorLevel
-					break
-				Sleep,64
-				PixelSearch,blahX,blahY,miner3X1,miner3Y1,miner3X2,miner3Y2,0xCB272F,30
-				if !ErrorLevel
-					break
-				Sleep,64
-				PixelSearch,blahX,blahY,miner4X1,miner4Y1,miner4X2,miner4Y2,0xCB272F,30
-				if !ErrorLevel
-					break
-				Sleep,64
-			}
-		}
-		ToolTip,Starting VCMiners...,gameWidth/2,0
-		MouseClick,Left ;Unlock the MaxNet terminal, and show the command prompt.
-		Loop{
-			ImageSearch,blahX,blahY,674+2,438,711+2,447, *80 Sprites/MaxNetConsoleBoxTitle.fw.png
-		} until !ErrorLevel
-		Sendinput,vcmine start{Enter}
-		Sleep,1500
-		Sendinput,lock{Enter}
-		Sleep,64
-		SendInput,{LAlt Down} ;Close the MaxNet command prompt.
-		Sleep,64
-		SendInput,{LAlt Up}
-		Sleep,1000
-		SendInput,{NumpadMult} ;Press keybind for "stopsound." Handy for watching videos on second screen.
-		ToolTip
-		if ManualToggle {
-			Menu,Tray,Icon, Sprites/Gmod.ico
-			if (!keepGameFocused) {
-				WinActivate,%activeWinTitle%
-			}
-			return
-		}
-		if CheckIfDead(true,false,false) { ;We run an additional death check here, in case death occurred while MaxNet computer was in use. (Possible scenario of someone camping the player, waiting for computer to be unlocked.)
-			ToolTip,Player died at %A_Now%,0,0
-			Menu,Tray,Icon, Sprites/Gmod.ico
-			return
-		}
-		if InStr(restartMode, "timed",true)
-		{
-			Random,vcMinerRestartDelay,180000,300000 ;(3-5 minutes should be a decent range of time to expect VCMiners to stop at random.)
-			ToolTip,Waiting %vcMinerRestartDelay%ms before restarting miners...,gameWidth/2,0
-			Sleep,vcMinerRestartDelay
-		}
-	}
-	Menu,Tray,Icon, Sprites/Gmod.ico
-	return
-}
 
 /*
 	/=======================================================================\
@@ -670,6 +859,10 @@ VCMinerManager(ManualToggle=false, keepGameFocused:=true, restartMode:="timed"){
 	|	Stuff that's currently being thought over, and likely horribly broken in places.
 	\=======================================================================/
 */
+
+/*
+NOTE: Not gonna use this stuff, so commenting it out lmao
+
 AutoAmmoBuyer(purchaseDelay:=2000){ ;Annoyed by the delay on buying ammo from the F4 menu? ...*slaps roof* This baby can hold up to 100 magazines.
 	;~ NOTE: You can use the following command to bind the purchose of a desired ammo from the F4 list:
 	;~ bind i "say /buyammo 7"
@@ -777,3 +970,5 @@ MNEncrypt(plainText:="",key:=""){
 	}
 return
 }
+
+/*
