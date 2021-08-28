@@ -6,7 +6,7 @@
 Overwatch Automated Voiceliner by Tim Cook & GitHub user TrevorLaneRay.
 Modified to be compatible with a 1920x1080 game size.
 
-v0.1
+v0.55
 
 
                         .8 
@@ -49,7 +49,7 @@ There will be no liability for any damages caused direct or indirect for the sof
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 0.5
+Version = 0.55
 Menu,Tray,Tip,Overwatch Automated Voiceliner - Alpha v.%Version%
 Menu,Tray,Icon, Sprites/Gmod.ico
 
