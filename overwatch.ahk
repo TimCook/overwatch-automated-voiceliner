@@ -6,7 +6,7 @@
 Overwatch Automated Voiceliner by Tim Cook, GitHub user TrevorLaneRay, and AHK User Laszlo.
 Modified to be compatible with a 1920x1080 game size.
 
-v1.05
+v1.10
 
 
                         .8 
@@ -52,7 +52,7 @@ references are satirical and only for entertainment
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 1.05
+Version = 1.10
 Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Pre-Release v.%Version%
 Menu,Tray,Icon, Sprites/Gmod.ico
 
@@ -60,12 +60,12 @@ Menu,Tray,Icon, Sprites/Gmod.ico
 
 /*
 	/=======================================================================\
-	|Administrator Privilege Check
+	|Administrator Privilege Check | Note: was not needed lmao
 	\=======================================================================/
 */
 
 
-
+/* Note: was not needed lmao
 if !A_IsAdmin {
 	SoundPlay,Sounds/MacStartup.mp3
 	MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Software is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nRelaunch as admin?, The voiceline script needs to be run as administrator in order to send keyboard presses & mouse input stuff, ya know?`n`nShall we relaunch the script as administrator for you?`n`n(If not`, we'll just exit the script. `n`n`n{The source code is literally available to view if you think its a virus lmao, up to u - smh my head})
@@ -84,6 +84,19 @@ if !A_IsAdmin {
 	}
 
 } else {
+	*/
+
+SoundPlay,Sounds/MacStartup.mp3
+MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Do you understand & agree to the following:`n`nThis software is provided 'as is', without any liability or warranty. `nYou are using at your own risk.`n`n{The source code is literally available to view if you think its a virus lmao, smh my head but up to you})
+	IfMsgBox,No
+	{
+		SoundPlay,Sounds/Bruh.mp3
+		Sleep,1000
+		ExitApp
+	}
+	IfMsgBox,Yes
+	{
+
 	SoundPlay,Sounds/WindowsXPStartupSoundLOL.mp3
 	
 	/*
@@ -93,9 +106,8 @@ if !A_IsAdmin {
 		TheGuide.Push(LoadPicture(A_LoopFileFullPath))
 	}
 	*/
-
-	MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`nPage Up: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]"
-}
+		MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`nPage Up: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]"
+	}
 
 
 
