@@ -1,13 +1,9 @@
 /*
-Gmod Macros
-	A collection of AutoHotkey functions intended for use in day-to-day Garry's mod play.
-NOTES:
-	Script was designed with a 1600x900 game window in mind.
-		Window coordinates for ImageSearch are offset by +2 pixels on the X axis.
-	MaxNet console command delay seems to be reliable at minimum 1250ms.
-		Apparently becomes unreliable when submitting commands at 1250ms delay when more than 30-40 players online.
-TODO:
-	Implement dynamic coordinates for ImageSearch across different window sizes.
+Overwatch Automated Voiceliner by Tim Cook & GitHub user TrevorLaneRay.
+
+v0.1
+
+GPL-3.0 license.
 */
 
 #SingleInstance,force
