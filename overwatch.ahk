@@ -6,7 +6,7 @@
 Overwatch Automated Voiceliner by Tim Cook, GitHub user TrevorLaneRay, and AHK User Laszlo.
 Modified to be compatible with a 1920x1080 game size.
 
-v0.90
+v1.05
 
 
                         .8 
@@ -52,15 +52,20 @@ references are satirical and only for entertainment
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 0.90
-Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Beta v.%Version%
+Version = 1.05
+Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Pre-Release v.%Version%
 Menu,Tray,Icon, Sprites/Gmod.ico
+
+
 
 /*
 	/=======================================================================\
 	|Administrator Privilege Check
 	\=======================================================================/
 */
+
+
+
 if !A_IsAdmin {
 	SoundPlay,Sounds/MacStartup.mp3
 	MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Software is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nRelaunch as admin?, The voiceline script needs to be run as administrator in order to send keyboard presses & mouse input stuff, ya know?`n`nShall we relaunch the script as administrator for you?`n`n(If not`, we'll just exit the script. `n`n`n{The source code is literally available to view if you think its a virus lmao, up to u - smh my head})
@@ -89,7 +94,7 @@ if !A_IsAdmin {
 	}
 	*/
 
-	MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`nPause: Self-Explanatory`nEnd: Also Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`nCtrl + F7: Display Chat/Voiceline Hotkeys"
+	MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`nPage Up: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]"
 }
 
 
@@ -127,8 +132,8 @@ Loop, % OTAVoicelines.MaxIndex()
 
 Loop, Read, ota.txt
 {
-	OTAVoicelines%OTAVCs% := A_LoopReadLine
 	OTAVCs += 1
+	OTAVoicelines%OTAVCs% := A_LoopReadLine
 }
 
 /*
@@ -139,7 +144,10 @@ Loop, Read, ota.txt
 
 
 ; Pause program
-PgUp:: Pause
+PgUp::
+Pause
+Suspend
+return
 ; Reload program
 Home:: Reload
 ; Exits program
@@ -491,15 +499,17 @@ MMR(Group)
 	; full array elemental # of group-array
 	;E := OTAVoicelines[Group].MaxIndex(1)
 	Obama := Group
-
+	/*
 	Loop %Group%
 	{
 			Barack := OTAVoicelines%A_Index%
 			;MsgBox % "Bruh" . A_Index . OTAVoicelines%A_Index%
 	}
-
-	Obama -= 1
-	;Barack := OTAVoicelines.Obama
+	*/
+	;OTAVCs = Group
+	;Barack := ListItem(OTAVCs, OTAVoicelines.OTAVCs)
+	;Obama -= 1
+	Barack := OTAVoicelines%Obama%
 
 	;MsgBox % Barack
 

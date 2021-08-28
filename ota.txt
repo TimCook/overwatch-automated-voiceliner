@@ -1,5 +1,3 @@
-
-
 Suppressing,go sharp,prosecuting,engaging,cover
 Contact,contact confirm,contact confirm2,target my radial,target 1,go sharp2,viscon
 Closing,inbound,move in,cover me,unit closing,unit in
@@ -16,17 +14,3 @@ Possible hostiles,ready weapons,prep contact,weapon off,stay alert
 Affirmative,affirmative2,copy,copy that
 Sector secure,no movement,position clear,reporting clear,report all radials,no viscon
 Bouncer,flare down
-
-{
-1: normal, 
-2: yell, 
-3: whisper, 
-4: radio normal, 
-5: radio yell, 
-6: radio normal; 
-7: alien lmao, 
-8: alien yell lmao, 
-9: alien whisper lmao, 
-10: LOOC idk why tho
-11: OOC
-}
