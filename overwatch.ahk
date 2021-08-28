@@ -3,10 +3,10 @@
 
 <:: --- ::>
 
-Overwatch Automated Voiceliner by Tim Cook, GitHub user TrevorLaneRay, and AHK User Laszlo.
+Overwatch Automated Voiceliner by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
 Modified to be compatible with a 1920x1080 game size.
 
-v1.10
+v1.50
 
 
                         .8 
@@ -48,14 +48,33 @@ references are satirical and only for entertainment
 
 */
 
+#Include Extra.ahk
+;#Include Zip.ahk
 #Include List.ahk
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 1.10
+Version = 1.50
 Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Pre-Release v.%Version%
-Menu,Tray,Icon, Sprites/Gmod.ico
 
+
+IfNotExist, Gmod.ico
+{
+	; test := A_ScriptFullPath
+	Extract_extra1("./off3.wav")
+	Extract_extra2("./ota.txt")
+	Extract_extra3("./WindowsXPStartupSoundLOL.mp3")
+	Extract_extra4("./WindowsXPShutdownSoundLOL.mp3")
+	Extract_extra5("./MacStartup.mp3")
+	Extract_extra6("./Error.mp3")
+	Extract_extra7("./Bruh.mp3")
+	Extract_extra8("./GmodActive.ico")
+	Extract_extra9("./Gmod.ico")
+	Extract_extra10("./AutoHotKeyMap.exe")
+	;Unz("./stuff.zip", "./")
+}
+
+Menu,Tray,Icon, Gmod.ico
 
 
 /*
@@ -67,7 +86,7 @@ Menu,Tray,Icon, Sprites/Gmod.ico
 
 /* Note: was not needed lmao
 if !A_IsAdmin {
-	SoundPlay,Sounds/MacStartup.mp3
+	SoundPlay,MacStartup.mp3
 	MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Software is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nRelaunch as admin?, The voiceline script needs to be run as administrator in order to send keyboard presses & mouse input stuff, ya know?`n`nShall we relaunch the script as administrator for you?`n`n(If not`, we'll just exit the script. `n`n`n{The source code is literally available to view if you think its a virus lmao, up to u - smh my head})
 	IfMsgBox,Yes
 	{
@@ -78,7 +97,7 @@ if !A_IsAdmin {
 	}
 	IfMsgBox,No
 	{
-		SoundPlay,Sounds/Bruh.mp3
+		SoundPlay,Bruh.mp3
 		Sleep,500
 		ExitApp
 	}
@@ -86,18 +105,18 @@ if !A_IsAdmin {
 } else {
 	*/
 
-SoundPlay,Sounds/MacStartup.mp3
+SoundPlay,MacStartup.mp3
 MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Do you understand & agree to the following:`n`nThis software is provided 'as is', without any liability or warranty. `nYou are using at your own risk.`n`n{The source code is literally available to view if you think its a virus lmao, smh my head but up to you})
 	IfMsgBox,No
 	{
-		SoundPlay,Sounds/Bruh.mp3
+		SoundPlay,Bruh.mp3
 		Sleep,1000
 		ExitApp
 	}
 	IfMsgBox,Yes
 	{
 
-	SoundPlay,Sounds/WindowsXPStartupSoundLOL.mp3
+	SoundPlay,WindowsXPStartupSoundLOL.mp3
 	
 	/*
 	TheGuide := []
@@ -110,13 +129,11 @@ MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Do you understand & agree
 	}
 
 
-
 /*
 	/=======================================================================\
 	|Initialization
 	\=======================================================================/
 */
-
 
 
 ; Default chat variable indicating /r (4: radio normal)
@@ -164,7 +181,7 @@ return
 Home:: Reload
 ; Exits program
 End:: 
-SoundPlay, Sounds/WindowsXPShutdownSoundLOL.mp3
+SoundPlay, WindowsXPShutdownSoundLOL.mp3
 Sleep,2000
 ExitApp
 ; Launches GMod & connects to WN
@@ -210,7 +227,7 @@ from group 6, pick a voiceline to be entered with alien in whisper mode
 ; Chat Number 1 - 'Normal'
 ^Numpad7::
 Chat := 1
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to NORMAL...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -219,7 +236,7 @@ return
 ; Chat Number 2 - 'Yell'
 ^Numpad8::
 Chat := 2
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to YELL (y)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -228,7 +245,7 @@ return
 ; Chat Number 3 - 'Whisper'
 ^Numpad9::
 Chat := 3
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to WHISPER (w)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -237,7 +254,7 @@ return
 ; Chat Number 4 - 'Radio - Normal'
 ^Numpad4::
 Chat := 4
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to RADIO NORMAL (r)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -246,7 +263,7 @@ return
 ; Chat Number 5 - 'Radio - Yell'
 ^Numpad5::
 Chat := 5
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to RADIO YELL (ry)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -255,7 +272,7 @@ return
 ; Chat Number 6 - 'Radio - Whisper'
 ^Numpad6::
 Chat := 6
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to RADIO WHISPER (rw)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -264,7 +281,7 @@ return
 ; Chat Number 7 - 'Alien - Normal'
 ^Numpad1::
 Chat := 7
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to ALIEN NORMAL (ali)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -273,7 +290,7 @@ return
 ; Chat Number 8 - 'Alien - Yell'
 ^Numpad2::
 Chat := 8
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to ALIEN YELL (aliy)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -282,7 +299,7 @@ return
 ; Chat Number 9 - 'Alien - Whisper'
 ^Numpad3::
 Chat := 9
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to ALIEN WHISPER (aliw)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -291,7 +308,7 @@ return
 ; Chat Number 10 - 'LOOC'
 ^Numpad0::
 Chat := 10
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to LOCAL OOC...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -300,7 +317,7 @@ return
 ; Chat Number 11 - 'OOC'
 ^NumpadDot::
 Chat := 11
-SoundPlay, Sounds/off3.wav
+SoundPlay, off3.wav
 ToolTip,Set chatmode to GLOBAL OOC...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -539,7 +556,7 @@ MMR(Group)
 	If (E < 0)
 	{
 		MsgBox % "bruh u did not load in any voice lines lmfao moron L L L L L | Debug: " . E ; . R . P
-		SoundPlay,Sounds/Error.mp3
+		SoundPlay,Error.mp3
 		return "[ERROR 1] "
 	}
 
@@ -548,7 +565,7 @@ MMR(Group)
 	If (R != P)
 	{
 		MsgBox % "bruh u probably double-spaced a line or some shit cause it looks like one or more lines are empty wtf what r u doin u pp head lol | Debug: " . E . R . P
-		SoundPlay,Sounds/Error.mp3
+		SoundPlay,Error.mp3
 		return "[ERROR 2] "
 	}
 	*/
@@ -557,7 +574,7 @@ MMR(Group)
 	if (Obama < 0)
 	{
 		MsgBox % "wtf there are no voicelines in this group wtf what r u smokin bro | Debug: " . E ; . R . P
-		SoundPlay,Sounds/Error.mp3
+		SoundPlay,Error.mp3
 		return "[ERROR 0] "
 	}
 	*/
@@ -603,7 +620,7 @@ MMR(Group)
 	if (Bruh != true)
 	{
 		ToolTip,wtf MMR procedure was bad rogue erotic strider roleplay engaged haha...,gameWidth/2,0
-		SoundPlay,Sounds/Error.mp3
+		SoundPlay,Error.mp3
 		return "[ERROR 3] "
 	}
 
@@ -642,7 +659,7 @@ Cohesion(Chat)
 	if (Chat < 0)
 	{
 		ToolTip,somehow u bypassed the first check for a non-positive chat lmao...,gameWidth/2,0
-		SoundPlay,Sounds/Error.mp3
+		SoundPlay,Error.mp3
 		return 100
 	}
 	if (Chat == 1)
@@ -692,7 +709,7 @@ Cohesion(Chat)
 	if (Chat > 11)
 	{
 		ToolTip,bruh chat type higher than eleven...,gameWidth/2,0
-		SoundPlay,Sounds/Error.mp3
+		SoundPlay,Error.mp3
 		return 200
 	}
 }
@@ -712,7 +729,7 @@ Cohesion(Chat)
 OTA(Group, Chat)
 {
 	
-	Menu,Tray,Icon, Sprites/GmodActive.ico
+	Menu,Tray,Icon, GmodActive.ico
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
 	;FormatTime, timeString, A_NowUTC,hh:mm:ss tt
 
@@ -722,14 +739,14 @@ OTA(Group, Chat)
 	if (Group < 0)
 	{
 		ToolTip,wtf u somehow entered a negative number for VC group u headass...,gameWidth/2,0
-		SoundPlay,Sounds/Error.mp3
+		SoundPlay,Error.mp3
 		return 1
 	} 
 
 	if (Chat < 0)
 	{
 		ToolTip,wtf u somehow entered a negative number for chat-type u headass...,gameWidth/2,0
-		SoundPlay,Sounds/Error.mp3
+		SoundPlay,Error.mp3
 		return 2
 	}
 
@@ -776,7 +793,7 @@ OTA(Group, Chat)
 	SendInput, %P%{Enter}
 	*/
 	
-	Menu,Tray,Icon, Sprites/Gmod.ico
+	Menu,Tray,Icon, Gmod.ico
 	ToolTip
 	return
 
@@ -811,13 +828,13 @@ RepositionGameWindow(){
 
 /*
 SoundTest(){
-	SoundPlay,Sounds/Error.mp3
+	SoundPlay,Error.mp3
 	Sleep,500
-	SoundPlay,Sounds/MacStartup.mp3
+	SoundPlay,MacStartup.mp3
 	Sleep,500
-	SoundPlay,Sounds/WindowsXPStartupSoundLOL.mp3
+	SoundPlay,WindowsXPStartupSoundLOL.mp3
 	Sleep,5500
-	SoundPlay,Sounds/Bruh.mp3
+	SoundPlay,Bruh.mp3
 	return
 }
 */
@@ -865,7 +882,7 @@ CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returnin
 	/*
 
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
-	ImageSearch,blahX,blahY,40+2,741,71+2,752, *80 Sprites/ChatBoxActive.fw.png
+	ImageSearch,blahX,blahY,40+2,741,71+2,752, *80 ChatBoxActive.fw.png
 	if !ErrorLevel {
 		if closeChat {
 			chatPresentTimestamp:=A_TickCount
@@ -876,7 +893,7 @@ CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returnin
 				SendInput,{Esc}
 				ToolTip,Closing chatbox (Attempt %A_Index%)...,gameWidth/2,0
 				Sleep,2000
-				ImageSearch,blahX,blahY,40+2,741,71+2,752, *80 Sprites/ChatBoxActive.fw.png
+				ImageSearch,blahX,blahY,40+2,741,71+2,752, *80 ChatBoxActive.fw.png
 			} until ErrorLevel
 			ToolTip
 			return false
@@ -901,7 +918,7 @@ CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returnin
 
 Amputate()
 { 
-	Menu,Tray,Icon, Sprites/GmodActive.ico
+	Menu,Tray,Icon, GmodActive.ico
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
 	FormatTime, timeString, A_NowUTC,hh:mm:ss tt
 
@@ -913,7 +930,7 @@ Amputate()
 	} until CheckForChatBox(false)
 
 	SendInput,%ampMessageString%{Enter}
-	Menu,Tray,Icon, Sprites/Gmod.ico
+	Menu,Tray,Icon, Gmod.ico
 	ToolTip
 	return
 }
