@@ -46,11 +46,12 @@ There will be no liability for any damages caused direct or indirect for the sof
 
 */
 
+#Include List.ahk
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
 Version = 0.55
-Menu,Tray,Tip,Overwatch Automated Voiceliner - Alpha v.%Version%
+Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Alpha v.%Version%
 Menu,Tray,Icon, Sprites/Gmod.ico
 
 /*
@@ -75,6 +76,7 @@ if !A_IsAdmin {
 	}
 
 } else {
+	MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `nYou can press End to exit the program as well."
 	SoundPlay,Sounds/WindowsXPStartupSoundLOL.mp3
 }
 
@@ -90,9 +92,32 @@ if !A_IsAdmin {
 
 ; Default chat variable indicating /r (4: radio normal)
 Chat := 4
+OTAVCs := 0
 ; Group := 14
 
 
+OTAVoicelines := [] ; Overwatch Deployment
+
+/*
+; Approach 3b
+Temp := ""
+Voicelines := "ota.txt"
+FileRead, Temp, %Voicelines%
+OTAVoicelines := StrSplit(Temp, "`n")
+/*
+Loop, % OTAVoicelines.MaxIndex()
+{
+	MsgBox % OTAVoicelines[A_Index]
+}
+*/
+
+; Resuming Approach 3
+
+Loop, Read, ota.txt
+{
+	OTAVoicelines%OTAVCs% := A_LoopReadLine
+	OTAVCs += 1
+}
 
 /*
 	/=======================================================================\
@@ -101,10 +126,7 @@ Chat := 4
 */
 
 
-
-;Global hotkeys.
-
-
+;~Global hotkeys.
 Pause:: Pause
 Home:: Reload
 End:: ExitApp
@@ -238,7 +260,7 @@ Numpad9::OTA(16, Chat)
 
 
 ;Game hotkeys.
-#IfWinActive:: Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
+;#IfWinActive:: Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
 ;Insert:: HashDecoder()
 
 
@@ -246,12 +268,14 @@ Numpad9::OTA(16, Chat)
 /*
 
 	/=======================================================================\
-	| The Nexus Armory
+	| The Nexus Armory [Contains debug or previous approaches to voiceline parsing lol]
 	| "I love ERP." -Thomas Newcastle
 	|
-	| VC [Group] Formatting [.txt, stored in same directory as script]:        | "voiceline,voiceline,voiceline"
+	| VC [Group] Formatting [.txt, stored in same directory as script]:        
+	| "voiceline,voiceline,voiceline"
 	|
-	| {if u do "voiceline, voiceline, voiceline", then voicelines will look    | like "/r voiceline          voiceline" lmao}
+	| {if u do "voiceline, voiceline, voiceline", then voicelines will look    
+	| like "/r voiceline          voiceline" lmao}
 	|
 	\=======================================================================/
 
@@ -262,20 +286,25 @@ Numpad9::OTA(16, Chat)
 
 	Approach 2 [] - Parse & create individual voiceline group arrays and using each individual voiceline group as objects of which are stored within a object-oriented group-array, that is then stored inside of the 'master' OOP array that has the group-specific OOP arrays containing voiceline-arrays with each element of index containing exactly one voiceline to be used/parsed
 
-	Approach 3 [full-alpha stage - to be tested] - Make Approach much less complicated by just making voiceline group arrays, specific to group, but not contained within object-oriented program structure because that is mindboggling and butthole poop
+	Approach 3 [full-alpha stage - tested, using approach 3b] - Make Approach much less complicated by just making voiceline group arrays, specific to group, but not contained within object-oriented program structure because that is mindboggling and butthole poop
+
+	Approach 3b [alpha-moderate stage - to be tested] - Using a array of comma lists & List.ahk functions [ListItem(pos,list) for view]
 */
 
 
 
-OTAVoicelines := [] ; Overwatch Deployment
 
+
+; Approaches 1 & 3
 ; VCGroup := [] ; HPR-1
 
+/*
 OTAVoicelines[e] := A_LoopField
 OTAVoicelines[e, r] := A_LoopReadLine
 
 P := 0 
 ; could just use OTAVoicelines.MaxIndex() but P is good since it spells out "ERP" haha lmao
+
 
 Loop, Read, %A_AhkPath%\ota.txt
 {
@@ -291,15 +320,16 @@ Loop, Read, %A_AhkPath%\ota.txt
 ; Explanation of above thingy lmao:
 ; OTAVoicelines[VoicelineGroup, VoicelinesInsideGroup]
 ; Starts from OTAVoicelines[0, 0] to OTAVoicelines[n, n]
+*/
 
-;debug debug debug 
+; Approach 3 - debug debug debug 
 ; ---
-
+/*
 Loop % P
 {
 	; VC := OTAVoicelines[A_Index]
 	
-	For idx, P
+	For idx, in P
 	{
 		debugcycle := 0
 
@@ -315,7 +345,7 @@ Loop % P
 
 	; MsgBox % "number " . %A_Index% . " burger king foot lettuce " . OTAVoicelines[A_INDEX] ; debug debug debug
 }
-
+*/
 ; ---
 
 /*
@@ -345,60 +375,76 @@ For idx, element in OTAVoicelines
 
 MMR(Group)
 {
-	E = OTAVoicelines[Group].MaxIndex(1)
 	; full array elemental # of group-array
+	;E := OTAVoicelines[Group].MaxIndex(1)
+	Obama := Group
 
-	R = OTAVoicelines[Group].Length(1) 
+	Loop %Group%
+	{
+			Barack := OTAVoicelines%A_Index%
+			;MsgBox % "Bruh" . A_Index . OTAVoicelines%A_Index%
+	}
+
+	Obama -= 1
+	;Barack := OTAVoicelines.Obama
+
+	;MsgBox % Barack
+
+	E := ListLen(Barack)
+	;debug MsgBox % E
+; redundant unused variable but its funny lol
+; R := OTAVoicelines[Group].Length(1) 
 	
-	; actual array (of actually existing) elemental # of group array
-	P = OTAVoicelines[Group].Count(1) 
+; actual array (of actually existing) elemental # of group array
+; P := OTAVoicelines[Group].Count(1) 
 
 	; ERP haha lmao
 	
 	; case 1 - empty voiceline array
 	If (E < 0)
 	{
-		MsgBox % "bruh u did not load in any voice lines lmfao moron L L L L L"
+		MsgBox % "bruh u did not load in any voice lines lmfao moron L L L L L | Debug: " . E ; . R . P
 		SoundPlay,Sounds/Error.mp3
 		return "[ERROR 1] "
 	}
 
+	/* note: edited out as the main OTAVoicelines array will be multidimensional
 	; case 2 - delimiter issue which is a ','
 	If (R != P)
 	{
-		MsgBox % "bruh u probably double-spaced a line or some shit cause it looks like one or more lines are empty wtf what r u doin u pp head lol"
+		MsgBox % "bruh u probably double-spaced a line or some shit cause it looks like one or more lines are empty wtf what r u doin u pp head lol | Debug: " . E . R . P
 		SoundPlay,Sounds/Error.mp3
 		return "[ERROR 2] "
 	}
-
-	Obama := R
-	Obama += -1 
-
+	*/
+	/*
 	; case 0 - if there are no voicelines in the specified group lmao
 	if (Obama < 0)
 	{
-		MsgBox % "wtf there are no voicelines in this group wtf what r u smokin bro"
+		MsgBox % "wtf there are no voicelines in this group wtf what r u smokin bro | Debug: " . E ; . R . P
 		SoundPlay,Sounds/Error.mp3
 		return "[ERROR 0] "
 	}
-
+	*/
 	; because arrays start from 0
+	SlashRoll := 0
+	Random, SlashRoll, 0, E
 
-	Random, SlashRoll, 0, Obama
-
-	; debug test
+	/* debug test
 
 	butt := 5
 
-	For idx69, butt
+	For idx69, in butt
 	{
 		SlashRoll2 := 0
 		Random, SlashRoll2, 0, Obama
 		MsgBox % OTAVoiceline[Group, SlashRoll2]
 	}
+	*/
 
+	/* Redundant homebrew thing 
 	Bruh := true
-	For each, value in OTAVoiceline[Group, SlashRoll]
+	For each, value in ListItem(SlashRoll, OTAVoiceline[Group])
 	{
 		if !(value == "")
 		{
@@ -408,17 +454,19 @@ MMR(Group)
 		}
 	}
 
+
 	; case 3 - slashRoll, the randomly generated number for voiceline, does not exist kind of situation lel if (OTAVoiceline[Group, SlashRoll])
 	if (Bruh != true)
 	{
-		MsgBox % "wtf MMR procedure was bad, rogue erotic strider roleplay engaged haha"
+		ToolTip,wtf MMR procedure was bad rogue erotic strider roleplay engaged haha...,gameWidth/2,0
 		SoundPlay,Sounds/Error.mp3
 		return "[ERROR 3] "
 	}
 
 	; else
-
-	return OTAVoiceline[Group, SlashRoll]
+	*/
+	Z := ListItem(SlashRoll, Barack)
+	return Z
 
 	/*
 
@@ -449,7 +497,7 @@ Cohesion(Chat)
 {
 	if (Chat < 0)
 	{
-		MsgBox % "somehow u bypassed the first check for a non-positive chat lmao"
+		ToolTip,somehow u bypassed the first check for a non-positive chat lmao...,gameWidth/2,0
 		SoundPlay,Sounds/Error.mp3
 		return 100
 	}
@@ -499,7 +547,7 @@ Cohesion(Chat)
 	}
 	if (Chat > 11)
 	{
-		MsgBox % "bruh chat type higher than eleven"
+		ToolTip,bruh chat type higher than eleven...,gameWidth/2,0
 		SoundPlay,Sounds/Error.mp3
 		return 200
 	}
@@ -529,14 +577,14 @@ OTA(Group, Chat)
 
 	if (Group < 0)
 	{
-		MsgBox % "wtf u somehow entered a negative number for VC group, u headass"
+		ToolTip,wtf u somehow entered a negative number for VC group u headass...,gameWidth/2,0
 		SoundPlay,Sounds/Error.mp3
 		return 1
 	} 
 
 	if (Chat < 0)
 	{
-		MsgBox % "wtf u somehow entered a negative number for chat-type, u headass"
+		ToolTip,wtf u somehow entered a negative number for chat-type u headass...,gameWidth/2,0
 		SoundPlay,Sounds/Error.mp3
 		return 2
 	}
@@ -544,7 +592,7 @@ OTA(Group, Chat)
 	E := Cohesion(Chat)
 
 	R := Group
-	R += -1
+	;R -= 1
 
 	P := MMR(R)
 	
@@ -574,9 +622,11 @@ OTA(Group, Chat)
 	Loop {
 		SendInput,y
 		ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
-		Sleep,2000
+		Sleep,100
 	} until CheckForChatBox(false)
-	SendInput,%VC%{Enter}
+	;SendInput,%VC%{Enter}
+	SendInput, %E%
+	SendInput, %P%{Enter}
 	Menu,Tray,Icon, Sprites/Gmod.ico
 	ToolTip
 	return
@@ -644,7 +694,7 @@ LaunchGmod(){ ;Checks if Gmod is running, and if not, offers to launch it. If th
 			ToolTip,Activating game window...,0,0
 			WinActivate,Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
 			WinWaitActive,Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
-			RepositionGameWindow()
+			;RepositionGameWindow()
 			ToolTip
 		}
 	}
@@ -699,7 +749,7 @@ CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returnin
 	*/
 
 	; Sleep, 2000
-	return false
+	return true
 }
 
 
