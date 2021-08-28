@@ -41,6 +41,9 @@ GPL-3.0 license.
 
 <:: --- ::>
 
+Disclaimer: Software is provided "as is", without any liability or warranty.
+There will be no liability for any damages caused direct or indirect for the software.
+
 */
 
 #SingleInstance,force
@@ -56,7 +59,7 @@ Menu,Tray,Icon, Sprites/Gmod.ico
 	\=======================================================================/
 */
 if !A_IsAdmin {
-	;Ask user if we want to relaunch the script as Administrator.
+	SoundPlay,Sounds/AOLError.mp3
 	MsgBox, 36, Relaunch as admin?, The script needs to be run as administrator in order to send keyboard presses and mouse input.`n`nShall we relaunch the script as administrator for you?`n(If not`, we'll just exit the script. {The source code is literally available to view if you think its a virus lmao, up to u})
 	IfMsgBox,Yes
 	{
@@ -67,33 +70,37 @@ if !A_IsAdmin {
 	}
 	IfMsgBox,No
 	{
+		SoundPlay,Sounds/Bruh.mp3
 		ExitApp
 	}
+
+} else {
+	SoundPlay,Sounds/WindowsXPStartupSoundLOL.mp3
 }
+
+
 
 /*
 	/=======================================================================\
-	|Hotkeys
-	|Joystick Keys Legend:
-	|	Joy1: A
-	|	Joy2: B
-	|	Joy3: X
-	|	Joy4: Y
-	|	Joy5: LShoulder
-	|	Joy6: RShoulder
-	|	Joy7: Select
-	|	Joy8: Start
-	|	Joy9: LThumbClick
-	|	Joy10: RThumbClick
-	|	vk07sc000: Guide Button (Does this even work in Windows 10?)
+	|Initialization
 	\=======================================================================/
 */
 
-;~ Function Test Hotkeys:
-;~ F12:: MNDecrypt("22decb4e5469a3798b6c51bb5cfefbb2","EroticFartRoleplay") ;Max password length is 19char?
-;~ Plaintext: "Plaintext phrase to encode."
-;~ Key: "EroticFartRoleplay"
-;~ Ciphertext: "22decb4e5469a3798b6c51bb5cfefbb2"
+
+
+; Default chat variable indicating /r (4: radio normal)
+Chat := 4
+; Group := 14
+
+
+
+/*
+	/=======================================================================\
+	|le high-temperature level indicative 'keys'
+	\=======================================================================/
+*/
+
+
 
 ;Global hotkeys.
 Pause:: Pause
@@ -131,9 +138,45 @@ E.g. OTA(6, 9) <:: haha lmao ::>
 
 */
 
-; make sure OTA() or something else sets this variable
-; Default chat variable indicating /r (4: radio normal)
-Chat = 4
+
+; Chat Hotkeys (to set mode of communication from 1 to 11)
+
+
+; Chat Number 1 - 'Normal'
++Numpad7::Chat := 1
+
+; Chat Number 2 - 'Yell'
++Numpad8::Chat := 2
+
+; Chat Number 3 - 'Whisper'
++Numpad9::Chat := 3
+
+; Chat Number 4 - 'Radio - Normal'
++Numpad4::Chat := 4
+
+; Chat Number 5 - 'Radio - Yell'
++Numpad5::Chat := 5
+
+; Chat Number 6 - 'Radio - Whisper'
++Numpad6::Chat := 6
+
+; Chat Number 7 - 'Alien - Normal'
++Numpad1::Chat := 7
+
+; Chat Number 8 - 'Alien - Yell'
++Numpad2::Chat := 8
+
+; Chat Number 9 - 'Alien - Whisper'
++Numpad3::Chat := 9
+
+; Chat Number 10 - 'LOOC'
++Numpad0::Chat := 10
+
+; Chat Number 11 - 'OOC'
++NumpadDot::Chat := 11
+
+
+; OTA Voiceline Hotkeys (to set from group of OTA voiceline(s))
 
 
 ; Number 1 - 'Suppressing, go sharp, prosecuting, engaging, cover'
@@ -191,16 +234,8 @@ Numpad9::OTA(16, Chat)
 
 ;Game hotkeys.
 #IfWinActive:: Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
-;NumpadDiv:: HashDecoder()
-NumpadSub:: HoldMouseButton("LButton") ;Holds the left mouse button down.
-F7:: DropBalance(true) ;Drops currently held /balance, and optionally makes a quick call to cops.
-F8:: ReportDeathAsRDM(false) ;Manual hotkey to report RDM.
+;Insert:: HashDecoder()
 
-F10:: BitMinerFueler() ;Keeps bitminer fueled. (This is just a stupid fueler; it won't defend your base for you. Don't run this AFK.)
-F11:: VCMinerManager(true,false) ;Triggers a single-use manual restart of VCMiners.
-+F11:: VCMinerManager(false,true,"timed") ;Starts AFK management of VCMiners (for extended breaks like laundry, officework, etc).
-F12:: AutoReloadWeapon()
-^F12:: AutoAmmoBuyer(2000)
 
 
 /*
@@ -222,8 +257,10 @@ F12:: AutoReloadWeapon()
 
 	Approach 2 [] - Parse & create individual voiceline group arrays and using each individual voiceline group as objects of which are stored within a object-oriented group-array, that is then stored inside of the 'master' OOP array that has the group-specific OOP arrays containing voiceline-arrays with each element of index containing exactly one voiceline to be used/parsed
 
-	Approach 3 [alpha] - Make Approach much less complicated by just making voiceline group arrays, specific to group, but not contained within object-oriented program structure because that is mindboggling and butthole poop
+	Approach 3 [full-alpha stage - to be tested] - Make Approach much less complicated by just making voiceline group arrays, specific to group, but not contained within object-oriented program structure because that is mindboggling and butthole poop
 */
+
+
 
 OTAVoicelines := [] ; Overwatch Deployment
 
@@ -232,7 +269,8 @@ OTAVoicelines := [] ; Overwatch Deployment
 OTAVoicelines[e] := A_LoopField
 OTAVoicelines[e, r] := A_LoopReadLine
 
-P := 0 ; could just use OTAVoicelines.MaxIndex() but P is good since it spells out "ERP" haha lmao
+P := 0 
+; could just use OTAVoicelines.MaxIndex() but P is good since it spells out "ERP" haha lmao
 
 Loop, Read, %A_AhkPath%\ota.txt
 {
@@ -245,6 +283,7 @@ Loop, Read, %A_AhkPath%\ota.txt
 	;OTAVoicelines[P] := A_LoopReadLine
 }
 
+; Explanation of above thingy lmao:
 ; OTAVoicelines[VoicelineGroup, VoicelinesInsideGroup]
 ; Starts from OTAVoicelines[0, 0] to OTAVoicelines[n, n]
 
@@ -289,6 +328,7 @@ For idx, element in OTAVoicelines
 */
 
 
+
 /*
 	/=======================================================================\
 	|MMR Procedures & Radio Cohesion
@@ -296,11 +336,17 @@ For idx, element in OTAVoicelines
 	\=======================================================================/
 */
 
+
+
 MMR(Group)
 {
 	E = OTAVoicelines[Group].MaxIndex(1)
-	R = OTAVoicelines[Group].Length(1)
-	P = OTAVoicelines[Group].Count(1)
+	; full array elemental # of group-array
+
+	R = OTAVoicelines[Group].Length(1) 
+	
+	; actual array (of actually existing) elemental # of group array
+	P = OTAVoicelines[Group].Count(1) 
 
 	; ERP haha lmao
 	
@@ -308,6 +354,7 @@ MMR(Group)
 	If (E < 0)
 	{
 		MsgBox % "bruh u did not load in any voice lines lmfao moron L L L L L"
+		SoundPlay,Sounds/Error.mp3
 		return "[ERROR 1] "
 	}
 
@@ -315,6 +362,7 @@ MMR(Group)
 	If (R != P)
 	{
 		MsgBox % "bruh u probably double-spaced a line or some shit cause it looks like one or more lines are empty wtf what r u doin u pp head lol"
+		SoundPlay,Sounds/Error.mp3
 		return "[ERROR 2] "
 	}
 
@@ -325,6 +373,7 @@ MMR(Group)
 	if (Obama < 0)
 	{
 		MsgBox % "wtf there are no voicelines in this group wtf what r u smokin bro"
+		SoundPlay,Sounds/Error.mp3
 		return "[ERROR 0] "
 	}
 
@@ -358,6 +407,7 @@ MMR(Group)
 	if (Bruh != true)
 	{
 		MsgBox % "wtf MMR procedure was bad, rogue erotic strider roleplay engaged haha"
+		SoundPlay,Sounds/Error.mp3
 		return "[ERROR 3] "
 	}
 
@@ -389,11 +439,13 @@ MMR(Group)
 11: OOC
 */
 
+
 Cohesion(Chat)
 {
 	if (Chat < 0)
 	{
 		MsgBox % "somehow u bypassed the first check for a non-positive chat lmao"
+		SoundPlay,Sounds/Error.mp3
 		return 100
 	}
 	if (Chat == 1)
@@ -443,6 +495,7 @@ Cohesion(Chat)
 	if (Chat > 11)
 	{
 		MsgBox % "bruh chat type higher than eleven"
+		SoundPlay,Sounds/Error.mp3
 		return 200
 	}
 }
@@ -471,14 +524,15 @@ OTA(Group, Chat)
 
 	if (Group < 0)
 	{
-		;ampMessageString=% "[[ brb afk"
-		MsgBox % "wtf u somehow entered a fuckin negative number for VC group, u headass"
+		MsgBox % "wtf u somehow entered a negative number for VC group, u headass"
+		SoundPlay,Sounds/Error.mp3
 		return 1
 	} 
 
 	if (Chat < 0)
 	{
-		MsgBox % "wtf u somehow entered a fuckin negative number for chat-type, u headass"
+		MsgBox % "wtf u somehow entered a negative number for chat-type, u headass"
+		SoundPlay,Sounds/Error.mp3
 		return 2
 	}
 
@@ -491,20 +545,21 @@ OTA(Group, Chat)
 	
 	/*
 
-		If OTA (1, 1)
-			initialize game window structures
-			check group/chat < 0 [cases 1 and 2]
-			then initialize E.R.P. variables
-			then let R equal 1 then minus 1 for 0, since arrays start at 0
-			E equals the returned prefix of message with radio/message/[L]OOC commands
-			P equals the returned randomly picked voiceline from group (technically) 0 {as stored index-wise in the VC array} [which is 1, the first VC group]
-			Let VC equal the full message
-			then loop:
-				press y
-				helpful info that says to stop pressing stuff for voice line
-			...until Chatbox-open is confirmed
+		i. If OTA (1, 1)
+			a. initialize game window structures
+			b. check group/chat < 0 [cases 1 and 2]
+			c. then initialize E.R.P. variables
+			c1. then let R equal 1 then minus 1 for 0, since arrays start at 0
+			c2. E equals the returned prefix of message with radio/message/[L]OOC commands
+			c3. P equals the returned randomly picked voiceline from group (technically) 0 {as stored index-wise in the VC array} [which is 1, the first VC group]
+			d. Let VC equal the full message
+			e. then loop:
+				e1. press y
+				e2. helpful info that says to stop pressing stuff for voice line
+			ee....until Chatbox-open is confirmed
 
-			then, after chatbox-open is confirmed, input/type the full VC then press enter key
+			f. then, after chatbox-open is confirmed, input/type the full VC 
+			g. then press enter key
 	*/
 
 	VC=% E . P
@@ -523,6 +578,8 @@ OTA(Group, Chat)
 
 }
 
+
+
 /*
 	/=======================================================================\
 	|Civil Protection Functions
@@ -530,7 +587,7 @@ OTA(Group, Chat)
 	\=======================================================================/
 */
 
-
+; insert Protec(Group, Chat) thingy here [TBA]
 
 
 /*
@@ -540,26 +597,22 @@ OTA(Group, Chat)
 	\=======================================================================/
 */
 
-ImageSearchTest(){
-	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
-	;Note the "+2" on the coords - this is due to the windowed mode of the game having an offset of 2px on the x-axis...
-	;If pulling coordinates from screenshots, make sure to take this into account.
-	ImageSearch,blahX,blahY,737+2,467,863+2,483, *150 Sprites/SpriteFileName.fw.png
-	if !ErrorLevel
-		ToolTip,Found at %blahX%`,%blahY%,gameWidth/2,0
-	if ErrorLevel
-		ToolTip,NOT FOUND,gameWidth/2,0
-	return
-}
-
+/*
 RepositionGameWindow(){
 	LaunchGmod()
 	WinMove,0,0
 	return
 }
+*/
 
 SoundTest(){
-	SoundPlay,Sounds/InceptionNoise.mp3
+	SoundPlay,Sounds/Error.mp3
+	Sleep,500
+	SoundPlay,Sounds/AOLError.mp3
+	Sleep,500
+	SoundPlay,Sounds/WindowsXPStartupSoundLOL.mp3
+	Sleep,5500
+	SoundPlay,Sounds/Bruh.mp3
 	return
 }
 
@@ -593,39 +646,20 @@ LaunchGmod(){ ;Checks if Gmod is running, and if not, offers to launch it. If th
 	return
 }
 
-CheckIfDisconnected(reconnect:=false,irrelevantDisconnection:=false){
-	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
-	ImageSearch,blahX,blahY,631+2,464,776+2,473, *80 Sprites/LostConnectionToServer.fw.png
-	if !ErrorLevel {
-		SoundPlay,Sounds/InceptionNoise.mp3
-		if reconnect {
-			Run,steam://connect/178.239.172.10:27015/
-			;TODO: Add functionality to determine that we actually make it back into the game after attempting to reconnect
-			if !irrelevantDisconnection { ;Return true even if we were able to reconnect.
-				return true
-			} else {
-				return false
-			}
-		} else {
-			return true
-		}
-	} else {
-		return false
-	}
-	return
-}
-
 /*
 	/=======================================================================\
 	|Main Functions
 	\=======================================================================/
 */
+
+/*
 HoldMouseButton(mouseButton:="LButton"){
-	;Holds down specified mouse button. Great for mining with a pickaxe or repairing a car, since it requires you to hold down the mouse button for a long time.
+	;
 	SendInput,{%mouseButton% Down}
 	Sleep,64
 	return
 }
+*/
 
 CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returning true/false, and optionally closes it. (Returns false once sucessfully closed. Returns true if not able to close.)
 	
@@ -663,130 +697,38 @@ CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returnin
 	return false
 }
 
-CheckIfDead(respawn:=false, irrelevantDeath:=false,reportDeathToAdmins:=false){
-	;~ Checks if player is dead, returning true/false. If so, optionally respawn.
-	;~ (Returns false once successfully respawned. Returns true if unable to respawn.
-	;~ irrelevantDeath argument will optionally return true even if we respawn. Optionally reports death as RDM to admins.)
-	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
-	ImageSearch,blahX,blahY,693+2,414,905+2,441, *80 Sprites/YouAreDeadPendingRespawn.fw.png
-	if !ErrorLevel {
-		;~ Scare the player to get their attention back on the game window.
-		SoundPlay,Sounds/InceptionNoise.mp3
-		if respawn {
-			deathTimestamp:=A_TickCount
-			ToolTip,Waiting for respawn timer...,gameWidth/2,0
-			Loop { ;Wait for the respawn timer...
-				ImageSearch,blahX,blahY,737+2,467,863+2,483, *150 Sprites/YouAreDeadReadyToRespawn.fw.png
-			} until !ErrorLevel
-			ToolTip,Attempting to respawn...,gameWidth/2,0
-			Loop { ;Press Space until we respawn. Bail out if we can't respawn within 30s.
-				if ((A_TickCount - deathTimestamp) >= 30000) { ;Just return true if we weren't able to respawn within 30s.
-					if reportDeathToAdmins
-						ReportDeathAsRDM(false)
-					return true
-				}
-				SendInput,{Space}
-				Sleep,2000
-				ImageSearch,blahX,blahY,693+2,414,905+2,441, *80 Sprites/YouAreDeadPendingRespawn.fw.png
-			} until ErrorLevel
-			ToolTip
-			if !irrelevantDeath {
-				if reportDeathToAdmins
-					ReportDeathAsRDM(false)
-				return true
-			} else {
-				if reportDeathToAdmins
-					ReportDeathAsRDM(false)
-				return false
-			}
-		} else {
-			if reportDeathToAdmins
-				ReportDeathAsRDM(false)
-			return true
-		}
-	} else {
-		if !irrelevantDeath {
-			if reportDeathToAdmins
-				ReportDeathAsRDM(false)
-			return false
-		} else {
-			if reportDeathToAdmins
-				ReportDeathAsRDM(false)
-			return true
-		}
-	}
-	return
-}
 
-Amputate(indicateAFK:=true){ ;Initiates a /amputate message automatically, reporting PK.
-	;~ Requires that player is not AFK
-	
+;Initiates a /amputate message automatically, reporting PK.
+
+Amputate()
+{ 
 	Menu,Tray,Icon, Sprites/GmodActive.ico
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
 	FormatTime, timeString, A_NowUTC,hh:mm:ss tt
-	if indicateAFK {
-		ampMessageString=% "[[ brb afk"
-	} else {
-		ampMessageString=% "/amputate " . timeString . " UTC by Overwatch"
-	}
+
+	ampMessageString=% "/amputate TimeStamp: " . timeString . " UTC by Overwatch"
 	Loop {
 		SendInput,y
 		ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
 		Sleep,2000
 	} until CheckForChatBox(false)
+
 	SendInput,%ampMessageString%{Enter}
 	Menu,Tray,Icon, Sprites/Gmod.ico
 	ToolTip
 	return
 }
 
-/* Note: might use for something else idk lmao
-DropBalance(callPolice:=false){ ;A quick-response money dropper for use in mugging scenarios. Optionally places a quick call to police.
-	Menu,Tray,Icon, Sprites/GmodActive.ico
-	SendInput,{NumpadDiv}
-	Loop { ;Open chatbox.
-		if CheckForChatBox(false)
-			break
-		SendInput,y
-		Sleep,1000
-	}
-	Loop { ;Find our balance in chat. (Note that this uses the first appearance of a /balance message. TODO: rework to use the latest /balance message.)
-		ImageSearch,balanceX,balanceY,45+2,576,173+2,705,*80 Sprites/BalanceChatMessage.fw.png
-	} until !ErrorLevel
-	MouseClick,Left,balanceX+143,balanceY+5,2
-	Sleep,256
-	SendInput,{LCtrl Down}
-	Sleep,64
-	SendInput,c
-	Sleep,64
-	SendInput,{LCtrl Up}
-	balanceValue:=SubStr(Clipboard,2)
-	MouseClick,Left,100,746
-	Sleep,256
-	SendInput,/dropmoney %balanceValue%{Enter}
-	Sleep,1025
-	SendInput,{NumpadDiv}
-	if callPolice{
-		SendInput,5
-		Sleep,64
-		MouseClick,Left
-		Sleep,128
-		MouseClick,Right
-		Loop {
-			ImageSearch,ePhoneTitleX,ePhoneTitleY,734+2,408,763+2,417, *150 Sprites/PhoneMenuTitle.fw.png
-		} until !ErrorLevel
-		Sleep,64
-		MouseClick,Left,ePhoneTitleX+67,ePhoneTitleY+103
-		Sleep,128
-		SendInput,2
-		Sleep,64
-		MouseClick,Left
-		return
-	}
-	Menu,Tray,Icon, Sprites/Gmod.ico
-	return
-}
+/*
+	/=======================================================================\
+	|TBA Functions
+	|	lmao
+	\=======================================================================/
 */
+
+/*
+
+;Might be used for encrypted OTA radio chatter
 
 HashDecoder(){
 	global ;Necessary to work with clipboard values.
@@ -851,54 +793,12 @@ HashDecoder(){
 	Sleep,64
 	return
 }
-
-
-/*
-	/=======================================================================\
-	|Beta Functions (Beware - here be dragons.)
-	|	Stuff that's currently being thought over, and likely horribly broken in places.
-	\=======================================================================/
 */
+
 
 /*
 NOTE: Not gonna use this stuff, so commenting it out lmao
-
-AutoAmmoBuyer(purchaseDelay:=2000){ ;Annoyed by the delay on buying ammo from the F4 menu? ...*slaps roof* This baby can hold up to 100 magazines.
-	;~ NOTE: You can use the following command to bind the purchose of a desired ammo from the F4 list:
-	;~ bind i "say /buyammo 7"
-	;~ (This, for example, would buy the seventh ammo in the F4>Ammo list. (In this case, Big Rifle Ammo.))
-	Loop{
-		ToolTip,Purchasing Ammo...(x%A_Index%),gameWidth/2,0
-		SendInput,i
-		ToolTip,Waiting...(x%A_Index%),gameWidth/2,0
-		Sleep, purchaseDelay
-	}
-	return
-}
-
-AutoReloadWeapon(){ ;Keeps an eye on our weapon's ammo, immediately triggering a reload if the magazine is empty.
-	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
-	WatchAmmoCount:
-	ToolTip,Waiting to reload...,gameWidth/2,0
-	Loop{
-		ImageSearch,blahX,blahY,1300-10,853-10,(1300+165)+10,(853+40)+10, *Trans0xFF00FF *10 Sprites/EmptyMagazine.fw.png
-	} until !ErrorLevel
-	;~ Problem here is if we check for a "0" immediately to the left of the magazine's count, we would end up thinking we have no ammo when we have a multiple of 10 spare magazines.
-	;~ We instead run a looped ImageSearch to make sure we actually reload, and bail out if we couldn't successfully reload within 6 seconds.
-	;~ (I assume 6 seconds is the rough average time it takes to reload a weapon. In this case, an M27 IAR. Change if desired.)
-	ToolTip,Reloading...,gameWidth/2,0
-	SendInput,R
-	reloadTime := A_TickCount
-	Loop{ ;Wait here until we actually end up with ammo.
-		if ((A_TickCount - reloadTime) >= 6000) { ;Bail out if it's been more than six seconds since we've tried to reload.
-			MsgBox, 48, Out of ammo?, Looks like we ran out of ammo to reload with.`nWe'll reload the script now.
-			Reload
-		}
-		ImageSearch,blahX,blahY,1300-10,853-10,(1300+165)+10,(853+40)+10, *Trans0xFF00FF *10 Sprites/EmptyMagazine.fw.png
-	} until ErrorLevel
-	goto,WatchAmmoCount
-	return
-}
+TBA: For Encrypted OTA Radio Chatter {Maybe}
 
 Base64Decode(ByRef Bin,Code,IsString = 0){ ;Simple Base64 decoding function.
 	static CharSet := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -917,19 +817,6 @@ Base64Decode(ByRef Bin,Code,IsString = 0){ ;Simple Base64 decoding function.
 }
 
 MNDecrypt(cipherText:="",key:=""){
-	/*
-		Subtracts (or does it add?) a key string's characters' values from a ciphertext string, and returns the resulting plaintext.
-		How do we wrap the array to make sure our character codes stay within 32-126? Mod()? If <>?
-			Hydrogen's MNEncrypt DOES include the control characters like NUL, SOH, STX, ETX, etc in the math. We just don't notice because it's Base64'd output.
-			...Was Hydrogen only intending on using MNEncrypt to cipher "." and 0-9 with A-Za-z key phrases?
-			...No need to worry about there being control characters? Just Base64 the string, and be done with it?
-		The math of adding/subtracting the characters' values to/from each other doesn't add up. Something else, simple, is being done.
-			Could there be a stupidly-simple offset somewhere, just to throw us off? Hydrogen's smart like that.
-		Will have to expect a Base64 string, decode it directly into a plaintext variable, then run a string parse loop on each character of the string.
-			Then we have to figure out the relation between the Key and the Ciphertext.
-				We know the key has a RELATIVE effect on the text, but it doesn't explain the irregularity in the pattern of (attempted) decoded text.
-			Will need to do additional experimenting with Hydro's MNEncrypt to deduce what the relation is.
-	*/
 	ANSIChars:=["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""
 	," ","!","""","#","$","%","&","'","(",")","*","+",",","-",".","/","0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?"
 	,"@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\","]","^","_"
@@ -971,4 +858,6 @@ MNEncrypt(plainText:="",key:=""){
 return
 }
 
-/*
+Note: Above code is not used lol
+
+*/
