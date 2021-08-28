@@ -3,10 +3,10 @@
 
 <:: --- ::>
 
-Overwatch Automated Voiceliner by Tim Cook & GitHub user TrevorLaneRay.
+Overwatch Automated Voiceliner by Tim Cook, GitHub user TrevorLaneRay, and AHK User Laszlo.
 Modified to be compatible with a 1920x1080 game size.
 
-v0.55
+v0.90
 
 
                         .8 
@@ -44,14 +44,16 @@ GPL-3.0 license.
 Disclaimer: Software is provided "as is", without any liability or warranty.
 There will be no liability for any damages caused direct or indirect for the software.
 
+references are satirical and only for entertainment
+
 */
 
 #Include List.ahk
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 0.55
-Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Alpha v.%Version%
+Version = 0.90
+Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Beta v.%Version%
 Menu,Tray,Icon, Sprites/Gmod.ico
 
 /*
@@ -60,8 +62,8 @@ Menu,Tray,Icon, Sprites/Gmod.ico
 	\=======================================================================/
 */
 if !A_IsAdmin {
-	SoundPlay,Sounds/AOLError.mp3
-	MsgBox, 36, Relaunch as admin?, The script needs to be run as administrator in order to send keyboard presses and mouse input.`n`nShall we relaunch the script as administrator for you?`n(If not`, we'll just exit the script. {The source code is literally available to view if you think its a virus lmao, up to u})
+	SoundPlay,Sounds/MacStartup.mp3
+	MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Software is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nRelaunch as admin?, The voiceline script needs to be run as administrator in order to send keyboard presses & mouse input stuff, ya know?`n`nShall we relaunch the script as administrator for you?`n`n(If not`, we'll just exit the script. `n`n`n{The source code is literally available to view if you think its a virus lmao, up to u - smh my head})
 	IfMsgBox,Yes
 	{
 		;Launch a new instance of the script, this time with admin privilege.
@@ -72,12 +74,22 @@ if !A_IsAdmin {
 	IfMsgBox,No
 	{
 		SoundPlay,Sounds/Bruh.mp3
+		Sleep,500
 		ExitApp
 	}
 
 } else {
-	MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `nYou can press End to exit the program as well."
 	SoundPlay,Sounds/WindowsXPStartupSoundLOL.mp3
+	
+	/*
+	TheGuide := []
+	Loop, Files, *.jpg, R
+	{
+		TheGuide.Push(LoadPicture(A_LoopFileFullPath))
+	}
+	*/
+
+	MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`nPause: Self-Explanatory`nEnd: Also Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`nCtrl + F7: Display Chat/Voiceline Hotkeys"
 }
 
 
@@ -126,12 +138,18 @@ Loop, Read, ota.txt
 */
 
 
-;~Global hotkeys.
+; Pause program
 Pause:: Pause
+; Reload program
 Home:: Reload
-End:: ExitApp
+; Exits program
+End:: 
+SoundPlay, Sounds/WindowsXPShutdownSoundLOL.mp3
+Sleep,2000
+ExitApp
+; Launches GMod & connects to WN
 ^F5:: LaunchGmod()
-^F6:: PingWillardServer()
+; Launch Hotkey Mapping
 
 
 ;Roleplay hotkeys.
@@ -172,6 +190,7 @@ from group 6, pick a voiceline to be entered with alien in whisper mode
 ; Chat Number 1 - 'Normal'
 ^Numpad7::
 Chat := 1
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to NORMAL...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -180,6 +199,7 @@ return
 ; Chat Number 2 - 'Yell'
 ^Numpad8::
 Chat := 2
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to YELL (y)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -188,6 +208,7 @@ return
 ; Chat Number 3 - 'Whisper'
 ^Numpad9::
 Chat := 3
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to WHISPER (w)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -196,6 +217,7 @@ return
 ; Chat Number 4 - 'Radio - Normal'
 ^Numpad4::
 Chat := 4
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to RADIO NORMAL (r)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -204,6 +226,7 @@ return
 ; Chat Number 5 - 'Radio - Yell'
 ^Numpad5::
 Chat := 5
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to RADIO YELL (ry)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -212,6 +235,7 @@ return
 ; Chat Number 6 - 'Radio - Whisper'
 ^Numpad6::
 Chat := 6
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to RADIO WHISPER (rw)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -220,6 +244,7 @@ return
 ; Chat Number 7 - 'Alien - Normal'
 ^Numpad1::
 Chat := 7
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to ALIEN NORMAL (ali)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -228,6 +253,7 @@ return
 ; Chat Number 8 - 'Alien - Yell'
 ^Numpad2::
 Chat := 8
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to ALIEN YELL (aliy)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -236,6 +262,7 @@ return
 ; Chat Number 9 - 'Alien - Whisper'
 ^Numpad3::
 Chat := 9
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to ALIEN WHISPER (aliw)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -244,6 +271,7 @@ return
 ; Chat Number 10 - 'LOOC'
 ^Numpad0::
 Chat := 10
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to LOCAL OOC...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -252,6 +280,7 @@ return
 ; Chat Number 11 - 'OOC'
 ^NumpadDot::
 Chat := 11
+SoundPlay, Sounds/off3.wav
 ToolTip,Set chatmode to GLOBAL OOC...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -306,19 +335,41 @@ NumpadEnter::OTA(14, Chat)
 /*
 Number 15, burger king footlettuce the last thing you want in your burgerking burger is someone elses foot fungus admittedly he had shoes on
 
-Sector secure, no movement, position clear, reporting clear, report all radials, no viscon
+'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
 */
+; Number 15 - 'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
 Numpad6::OTA(15, Chat)
 
-; Number 16 - Bouncer, flare down
+; Number 16 - 'Bouncer, flare down'
 Numpad9::OTA(16, Chat)
 
 
-;Game hotkeys.
-;#IfWinActive:: Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
-;Insert:: HashDecoder()
+; Game hotkeys.
+; #IfWinActive:: Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
+; Insert:: HashDecoder()
 
+; The Hotkey Hotkey
+^F7::
+/*
+	Gui, Add, Pic, w600 h-1 vPic +Border, % "HBITMAP:*" TheGuide.1
+	Gui, Show
+	
+	
+	Loop	{
+		GuiControl, , Pic, % "HBITMAP:*" TheGuide[Mod(A_Index), Pics.Length())+1]
+		Sleep, 10000
+	}
+	
+	
+	Sleep, 30000
+	
+	GuiClose:
+	GuiEscape:
+*/
 
+	; Looks spooky but all it does is show the Hotkey layout lol
+Run, %A_ScriptDir%\AutoHotKeyMap.exe %A_ScriptFullPath%
+return
 
 /*
 
@@ -334,6 +385,13 @@ Numpad9::OTA(16, Chat)
 	|
 	\=======================================================================/
 
+Example of a good formatted list:
+
+ota.txt:
+apply,affirmative,sightlines
+copy,copy that,boomer
+bouncer,69 erp
+
 */
 
 /*
@@ -341,7 +399,7 @@ Numpad9::OTA(16, Chat)
 
 	Approach 2 [] - Parse & create individual voiceline group arrays and using each individual voiceline group as objects of which are stored within a object-oriented group-array, that is then stored inside of the 'master' OOP array that has the group-specific OOP arrays containing voiceline-arrays with each element of index containing exactly one voiceline to be used/parsed
 
-	Approach 3 [full-alpha stage - tested, using approach 3b] - Make Approach much less complicated by just making voiceline group arrays, specific to group, but not contained within object-oriented program structure because that is mindboggling and butthole poop
+	{Beta Debug-Run SUCCESS! yayyy} Approach 3 [full-alpha stage - tested, using approach 3b] - Make Approach much less complicated by just making voiceline group arrays, specific to group, but not contained within object-oriented program structure because that is mindboggling and butthole poop
 
 	Approach 3b [alpha-moderate stage - to be tested] - Using a array of comma lists & List.ahk functions [ListItem(pos,list) for view]
 */
@@ -681,16 +739,21 @@ OTA(Group, Chat)
 
 	VC=% E . P
 
-
 	; ---
+	/*
 	Loop {
-		SendInput,y
+		
 		ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
 		Sleep,100
 	} until CheckForChatBox(false)
-	;SendInput,%VC%{Enter}
+	*/
+	SendInput,y
+	SendInput,%VC%{Enter}
+	/*
+	
 	SendInput, %E%
 	SendInput, %P%{Enter}
+	*/
 	Menu,Tray,Icon, Sprites/Gmod.ico
 	ToolTip
 	return
@@ -728,7 +791,7 @@ RepositionGameWindow(){
 SoundTest(){
 	SoundPlay,Sounds/Error.mp3
 	Sleep,500
-	SoundPlay,Sounds/AOLError.mp3
+	SoundPlay,Sounds/MacStartup.mp3
 	Sleep,500
 	SoundPlay,Sounds/WindowsXPStartupSoundLOL.mp3
 	Sleep,5500
@@ -737,14 +800,7 @@ SoundTest(){
 }
 */
 
-PingWillardServer(){
-	;Fire up a quick command propmpt, pinging the game server until closed.
-	;Useful to quickly figure out if the server is reachable from clientside.
-	Run,cmd /C "ping 178.239.172.10 -n -1"
-	return
-}
-
-LaunchGmod(){ ;Checks if Gmod is running, and if not, offers to launch it. If the window is present, but hidden, it will bring it to the front, and snap it to the top-left corner of the screen.
+LaunchGmod(){
 	IfWinNotExist,Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
 	{
 		MsgBox, 36, Launch Garry's Mod?, There is no instance of Garry's Mod running.`nShould we launch it and connect to Willard Networks?
