@@ -1,7 +1,7 @@
 
 /*
 
-<--->
+<:: --- ::>
 
 Overwatch Automated Voiceliner by Tim Cook & GitHub user TrevorLaneRay.
 
@@ -38,7 +38,7 @@ jgs    `#######################'
 
 GPL-3.0 license.
 
-<--->
+<:: --- ::>
 
 */
 
