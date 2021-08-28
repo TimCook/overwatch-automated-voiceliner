@@ -4,7 +4,8 @@ swag
 hotkeys:
 ```
 ; Chat Hotkeys (to set mode of communication from 1 to 11)
-; The "^" character in front of hotkeys, for example "^Numpad7" basically means, hold the 'Ctrl' key while pressing Numpad7, e.g. 'Ctrl + Numpad7' to toggle normal mode.
+; The "^" character in front of hotkeys, for example "^Numpad7" basically means, 
+; to hold the 'Ctrl' key while pressing Numpad7, e.g. 'Ctrl + Numpad7' to toggle normal mode.
 
 ; Chat Number 1 - 'Normal'
 ^Numpad7::
