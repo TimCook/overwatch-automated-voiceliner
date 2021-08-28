@@ -46,8 +46,8 @@ GPL-3.0 license.
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 0.1
-Menu,Tray,Tip,Overwatch Automated Voiceliner v.%Version%
+Version = 0.5
+Menu,Tray,Tip,Overwatch Automated Voiceliner - Alpha v.%Version%
 Menu,Tray,Icon, Sprites/Gmod.ico
 
 /*
