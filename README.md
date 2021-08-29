@@ -117,4 +117,4 @@ with changes made to be used for automated voicelining
 
 
 Disclaimer: Software is provided "as is", without any liability or warranty.
-There will be no liability for any damages caused direct or indirect for the software.
+There will be no liability for any damages caused direct or indirect from the software.
