@@ -3,10 +3,10 @@
 
 <:: --- ::>
 
-Overwatch Automated Voiceliner by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
+Overwatch Automated Voiceliner (Lite) by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
 Modified to be compatible with a 1920x1080 game size.
 
-v1.50
+v1.69
 
 
                         .8 
@@ -48,16 +48,16 @@ references are satirical and only for entertainment
 
 */
 
-#Include Extra.ahk
+;#Include Extra.ahk had the false positive extraction system thingy smh lmao
 ;#Include Zip.ahk
 #Include List.ahk
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 1.50
-Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Pre-Release v.%Version%
+Version = 1.69
+Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Pre-Release (Lite) v.%Version%
 
-
+/*
 IfNotExist, Gmod.ico
 {
 	; test := A_ScriptFullPath
@@ -73,7 +73,7 @@ IfNotExist, Gmod.ico
 	Extract_extra10("./AutoHotKeyMap.exe")
 	;Unz("./stuff.zip", "./")
 }
-
+*/
 Menu,Tray,Icon, Gmod.ico
 
 
