@@ -9,6 +9,11 @@ To use:
 The overwatch.exe also automatically extracts the files in the files folder, so no worries
 Source code for files, extraction, program, et cetera., are all available to view above!
 
+I think Chrome will autodetect the file as a virus because of how C++ like injection / macro stuff functions 
+(Since hotkey macros literally are similar in technicality to keyloggers), so might be best to download
+the three.ahk files (Overwatch.ahk, Extras.ahk, List.ahk) and then use a installed AutoHotkey program to compile
+by right-clicking Overwatch.ahk to compile as a .exe and/or run script as-is
+
 hotkeys:
 
 To pause/halt program, press "Page Up"
