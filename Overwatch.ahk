@@ -5,7 +5,7 @@
 Overwatch Automated Voiceliner (Lite) by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
 Modified to be compatible with a 1920x1080 game size.
 
-v2.04
+v2.05
 
 
                         .8 
@@ -53,7 +53,7 @@ references are satirical and only for entertainment
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 2.04
+Version = 2.05
 Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Release v%Version%
 
 /*
@@ -613,7 +613,7 @@ Numpad9::OTA(16, Chat, Char)
 */
 
 	; Looks spooky but all it does is show the Hotkey layout lol
-Run, %A_ScriptDir%\AutoHotKeyMap.exe %A_ScriptFullPath%
+Run, %A_ScriptDir%\files\AutoHotKeyMap.exe %A_ScriptFullPath%
 ; Welcome message with tagline(s)!
 MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`n`nPause Key: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`n`nInsert Key: Set OTA Tagline Mode.`nDel (Delete) Key: Set Civil Protection Tagline Mode.`n`nHome Key: Set Non-Tagline Mode.`n`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]`n`n`nYour taglines are:`n`n<:: OTA - " . tagline1a . "-" . tagline1b . " ::>`n`n<:: Civil Protection - " . tagline2a . "-" . tagline2b . " ::>"
 return
