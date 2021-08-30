@@ -5,7 +5,7 @@
 Overwatch Automated Voiceliner (Lite) by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
 Modified to be compatible with a 1920x1080 game size.
 
-v2.00
+v2.02
 
 
                         .8 
@@ -53,7 +53,7 @@ references are satirical and only for entertainment
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 2.00
+Version = 2.02
 Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Release v%Version%
 
 /*
@@ -192,14 +192,15 @@ IfNotExist, %A_WorkingDir%\config\OAVSettings.ini
 			tag1a := ""
 			while (!validtagline)
 			{
-				InputBox, tag1a, OTA SQUAD Tagline (e.g. 'ION'), Please enter your SQUAD NAME ONLY (no numbers just the squad name), , 540, 480
+				InputBox, tag1a, OTA SQUAD Tagline (e.g. 'ION'), Please enter your OTA SQUAD NAME ONLY (no numbers just the OTA squad name), , 540, 480
 				if ErrorLevel
 				{
 				  SoundPlay, files\Bruh.mp3
-					MsgBox % "enter a ota tagline doofus"
+					MsgBox % "please enter a OTA tagline u doofus lmao"
 				}
 				else if tag1a is not alpha
 				{
+					SoundPlay, files\Error.mp3
 					MsgBox % "bro enter the squad NAME only not the full tagline lmao - like ION"
 				}
 				else
@@ -212,16 +213,16 @@ IfNotExist, %A_WorkingDir%\config\OAVSettings.ini
 			tag1b := 0
 			while (!validtagline)
 			{
-				InputBox, tag1b, OTA Unit NUMBER e.g. '69', Please enter your Unit DIGITS ONLY (if less than 10 please ONLY enter 1 number - not 09 or something), , 540, 480
+				InputBox, tag1b, OTA Unit NUMBER e.g. '69', Please enter your OTA Unit DIGITS ONLY (if less than 10 please ONLY enter 1 number - not 09 or something), , 540, 480
 				if ErrorLevel
 				{
 				  SoundPlay, files\Bruh.mp3
-					MsgBox % "enter a unit number doofus"
+					MsgBox % "please enter a OTA unit number doofus bruh"
 				}
 				else if tag1b is not integer
 				{
 					SoundPlay, files\Error.mp3
-					MsgBox % "enter ONLY numbers u big doofus McGee lmao"
+					MsgBox % "please enter ONLY ur OTA unit numberz u big doofus McGee lmao"
 				}
 				else
 				{
@@ -238,16 +239,16 @@ IfNotExist, %A_WorkingDir%\config\OAVSettings.ini
 			tag2a := ""
 			while (!validtagline)
 			{
-				InputBox, tag2a, Civil Protection SQUAD name (e.g. 'ROLLER'), Please enter your SQUAD NAME ONLY, , 540, 480
+				InputBox, tag2a, Civil Protection SQUAD name (e.g. 'ROLLER'), Please enter your CIVIL PROTECTION Squad NAME ONLY, , 540, 480
 				if ErrorLevel
 				{
 				  SoundPlay, files\Bruh.mp3
-					MsgBox % "enter a civil protection tagline doofus"
+					MsgBox % "please enter a civil protection tagline doofus lolol - if u do not have a tagline, just enter whatever u want, using alphabet only (no spaces), lmao"
 				}
 				else if tag2a is not alpha
 				{
 					SoundPlay, files\Error.mp3
-					MsgBox % "bro enter the Civil Protection squad NAME only not the full tagline lmao - like 'ROLLER'"
+					MsgBox % "bro enter the Civil Protection Squad NAME only, not the full tagline lmao - like 'ROLLER'"
 				}
 				else
 				{
@@ -259,16 +260,16 @@ IfNotExist, %A_WorkingDir%\config\OAVSettings.ini
 			tag2b := 0
 			while (!validtagline)
 			{
-				InputBox, tag2b, Civil Protection Unit NUMBER (e.g. '7'), Please enter your Unit DIGIT ONLY (please enter a single number, not 09 or something), , 540, 480
+				InputBox, tag2b, Civil Protection Unit NUMBER (e.g. '7'), Please enter your Civil Protection Unit single DIGIT ONLY (please enter a single number not 09 or something), , 540, 480
 				if ErrorLevel
 				{
 				  SoundPlay, files\Bruh.mp3
-					MsgBox % "enter a unit number doofus"
+					MsgBox % "enter a Civil Protection unit number doofus"
 				}
 				else if tag2b is not integer
 				{
 					SoundPlay, files\Error.mp3
-					MsgBox % "enter ONLY a SINGLE number u absolute bruh kind of bruh poop face haha lol"
+					MsgBox % "enter ONLY a SINGLE number for ur Civil Protection unit number u absolute bruh kind of bruh poop face haha lol"
 				}
 				else
 				{
@@ -299,6 +300,7 @@ IniRead, initest1, %A_WorkingDir%\config\OAVSettings.ini, Debug, test1
 
 if (initest1 == 1)
 {
+	SoundPlay, files\Bruh.mp3
 	MsgBox % "[INI DEBUG #1]`n`nLooks like the program was restarted or exited during the tagline entering process.`n`nTherefore, the configuration will be reset & the program will now restart so that correct tagline stuff can be entered!"
 	Sleep,5000
 	FileDelete, %A_WorkingDir%\config\OAVSettings.ini
