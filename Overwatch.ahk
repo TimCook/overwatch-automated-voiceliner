@@ -1,4 +1,3 @@
-
 /*
 
 <:: --- ::>
@@ -6,7 +5,7 @@
 Overwatch Automated Voiceliner (Lite) by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
 Modified to be compatible with a 1920x1080 game size.
 
-v1.75.420
+v2.00
 
 
                         .8 
@@ -54,15 +53,15 @@ references are satirical and only for entertainment
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 1.75.420
-Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Pre-Release (Lite) v.%Version%
+Version = 2.00
+Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Release v%Version%
 
 /*
 IfNotExist, Gmod.ico
 {
 	; test := A_ScriptFullPath
 	Extract_extra1("./off3.wav")
-	Extract_extra2("./ota.txt")
+	Extract_extra2("./%A_WorkingDir%\voicelines\ota.txt")
 	Extract_extra3("./WindowsXPStartupSoundLOL.mp3")
 	Extract_extra4("./WindowsXPShutdownSoundLOL.mp3")
 	Extract_extra5("./MacStartup.mp3")
@@ -74,7 +73,15 @@ IfNotExist, Gmod.ico
 	;Unz("./stuff.zip", "./")
 }
 */
-Menu,Tray,Icon, Gmod.ico
+IfNotExist, %A_WorkingDir%\files\Gmod.ico
+{
+	SoundPlay, files\Bruh.mp3
+	MsgBox % "[ERROR 001] It appears that either the 'files' folder and/or the 'Gmod.ico' icon file within /files/ is or are missing!`nPlease check if you have extracted the program files to a folder!"
+	Sleep,2000
+	ExitApp
+}
+Menu,Tray,Icon, %A_WorkingDir%\files\Gmod.ico
+
 
 
 /*
@@ -105,18 +112,18 @@ if !A_IsAdmin {
 } else {
 	*/
 
-SoundPlay,MacStartup.mp3
+SoundPlay, files\MacStartup.mp3
 MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Do you understand & agree to the following:`n`nThis software is provided 'as is', without any liability or warranty. `nYou are using at your own risk.`n`n{The source code is literally available to view if you think its a virus lmao, smh my head but up to you})
 	IfMsgBox,No
 	{
-		SoundPlay,Bruh.mp3
+		SoundPlay, files\Bruh.mp3
 		Sleep,1000
 		ExitApp
 	}
 	IfMsgBox,Yes
 	{
 
-	SoundPlay,WindowsXPStartupSoundLOL.mp3
+	SoundPlay, files\WindowsXPStartupSoundLOL.mp3
 	
 	/*
 	TheGuide := []
@@ -125,9 +132,8 @@ MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Do you understand & agree
 		TheGuide.Push(LoadPicture(A_LoopFileFullPath))
 	}
 	*/
-		MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`nPage Up: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]"
+		;MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`nPage Up: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]"
 	}
-
 
 /*
 	/=======================================================================\
@@ -138,20 +144,173 @@ MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Do you understand & agree
 
 ; Default chat variable indicating /r (4: radio normal)
 Chat := 4
-OTAVCs := 0
-; Group := 14
-R1 := ""
-R3 := ""
-R2 := ""
-Char := 1
 
+; Group := 14
+
+; Default set to Non-Tagline Mode (Press Insert to set OTA mode & Press Del to set Civil Protection mode. Press Home to set non-tagline mode.)
+
+Char := 3
+
+global tagline1a := "Attention"
+global tagline1b := "Overwatch"
+global tagline2a := "Attention"
+global tagline2b := "Dispatch"
+
+IfNotExist, %A_WorkingDir%\config\OAVSettings.ini
+{
+		IfNotExist, %A_WorkingDir%\config
+		{
+			FileCreateDir, %A_WorkingDir%\config
+			IfNotExist, %A_WorkingDir%\config
+			{
+				SoundPlay, files\Error.mp3
+				MsgBox % "[ERROR 400] Looks like the program is not able to access or create the config folder.`nPlease make sure you are not running the script directly within a zip file!"
+				Sleep,2500
+				ExitApp
+			}
+		}
+		IniWrite, Tim Cook, %A_WorkingDir%\config\OAVSettings.ini, OverwatchAutomatedVoiceliner, author
+		IniRead, bruh, %A_WorkingDir%\config\OAVSettings.ini, OverwatchAutomatedVoiceliner, author, moment
+		if (bruh == moment)
+		{
+			SoundPlay, files\Error.mp3
+			MsgBox % "[ERROR 401] Looks like the program is not able to access the OAVSettings.ini file that should be in the config/ folder.`nPlease make sure that you have extracted all necessary files into a folder & not running the script directly within a zip file!"
+			Sleep,2500
+			ExitApp
+		}
+		else
+		{
+			; Initialization
+
+			; If test1, as it is set to 1, is not turned to a 0 by completing tagline entering process, the if program section below will trigger config reset to have taglines re-entered
+			IniWrite, 1, %A_WorkingDir%\config\OAVSettings.ini, Debug, test1
+			IniWrite, Attention, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1a
+			IniWrite, Overwatch, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1b
+			IniWrite, Attention, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2a
+			IniWrite, Dispatch, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2b
+			validtagline := false
+			tag1a := ""
+			while (!validtagline)
+			{
+				InputBox, tag1a, OTA SQUAD Tagline (e.g. 'ION'), Please enter your SQUAD NAME ONLY (no numbers just the squad name), , 540, 480
+				if ErrorLevel
+				{
+				  SoundPlay, files\Bruh.mp3
+					MsgBox % "enter a ota tagline doofus"
+				}
+				else if tag1a is not alpha
+				{
+					MsgBox % "bro enter the squad NAME only not the full tagline lmao - like ION"
+				}
+				else
+				{
+				  MsgBox % "Your OTA Squad tagline is: " . tag1a . "!"
+				  validtagline := true
+				}
+			}
+			validtagline := false
+			tag1b := 0
+			while (!validtagline)
+			{
+				InputBox, tag1b, OTA Unit NUMBER e.g. '69', Please enter your Unit DIGITS ONLY (if less than 10 please ONLY enter 1 number - not 09 or something), , 540, 480
+				if ErrorLevel
+				{
+				  SoundPlay, files\Bruh.mp3
+					MsgBox % "enter a unit number doofus"
+				}
+				else if tag1b is not integer
+				{
+					SoundPlay, files\Error.mp3
+					MsgBox % "enter ONLY numbers u big doofus McGee lmao"
+				}
+				else
+				{
+				  MsgBox % "Your OTA Unit Digit(s) are/is: " . tag1b . "!"
+				  validtagline := true
+				}
+			}
+
+			MsgBox % "Your full OTA tagline is: " . tag1a . "-" . tag1b . "."
+			IniWrite, %tag1a%, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1a
+			IniWrite, %tag1b%, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1b
+
+			validtagline := false
+			tag2a := ""
+			while (!validtagline)
+			{
+				InputBox, tag2a, Civil Protection SQUAD name (e.g. 'ROLLER'), Please enter your SQUAD NAME ONLY, , 540, 480
+				if ErrorLevel
+				{
+				  SoundPlay, files\Bruh.mp3
+					MsgBox % "enter a civil protection tagline doofus"
+				}
+				else if tag2a is not alpha
+				{
+					SoundPlay, files\Error.mp3
+					MsgBox % "bro enter the Civil Protection squad NAME only not the full tagline lmao - like 'ROLLER'"
+				}
+				else
+				{
+				  MsgBox % "Your Civil Protection Squad name is: " . tag2a . "!"
+				  validtagline := true
+				}
+			}
+			validtagline := false
+			tag2b := 0
+			while (!validtagline)
+			{
+				InputBox, tag2b, Civil Protection Unit NUMBER (e.g. '7'), Please enter your Unit DIGIT ONLY (please enter a single number, not 09 or something), , 540, 480
+				if ErrorLevel
+				{
+				  SoundPlay, files\Bruh.mp3
+					MsgBox % "enter a unit number doofus"
+				}
+				else if tag2b is not integer
+				{
+					SoundPlay, files\Error.mp3
+					MsgBox % "enter ONLY a SINGLE number u absolute bruh kind of bruh poop face haha lol"
+				}
+				else
+				{
+				  MsgBox % "Your Civil Protection Unit Digit is: " . tag2b . "!"
+				  validtagline := true
+				}
+			}
+
+			MsgBox % "Your full Civil Protection tagline is: " . tag2a . "-" . tag2b . "."
+			IniWrite, %tag2a%, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2a
+			IniWrite, %tag2b%, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2b
+
+			; Confirms that tagline entering process was completed
+			IniWrite, 0, %A_WorkingDir%\config\OAVSettings.ini, Debug, test1
+		}
+}
+
+IfExist, %A_WorkingDir%\config\OAVSettings.ini
+{
+	IniRead, tagline1a, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1a
+	IniRead, tagline1b, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1b
+	IniRead, tagline2a, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2a
+	IniRead, tagline2b, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2b
+}
+
+initest1 := 0
+IniRead, initest1, %A_WorkingDir%\config\OAVSettings.ini, Debug, test1
+
+if (initest1 == 1)
+{
+	MsgBox % "[INI DEBUG #1]`n`nLooks like the program was restarted or exited during the tagline entering process.`n`nTherefore, the configuration will be reset & the program will now restart so that correct tagline stuff can be entered!"
+	Sleep,5000
+	FileDelete, %A_WorkingDir%\config\OAVSettings.ini
+	Reload
+}
 
 OTAVoicelines := [] ; Overwatch Deployment
 
 /*
 ; Approach 3b
 Temp := ""
-Voicelines := "ota.txt"
+Voicelines := "%A_WorkingDir%\voicelines\ota.txt"
 FileRead, Temp, %Voicelines%
 OTAVoicelines := StrSplit(Temp, "`n")
 /*
@@ -163,11 +322,30 @@ Loop, % OTAVoicelines.MaxIndex()
 
 ; Resuming Approach 3
 
-Loop, Read, ota.txt
+OTAVCs := 0
+
+Loop, Read, %A_WorkingDir%\voicelines\ota.txt
 {
 	OTAVCs += 1
 	OTAVoicelines%OTAVCs% := A_LoopReadLine
 }
+
+global Ra1 := tagline1a
+global Ra2 := tagline1b
+global Ra3 := "unit"
+
+global Rb1 := tagline2a
+global Rb2 := tagline2b
+global Rb3 := "functionary"
+
+;global Prev1 := 0
+;global Prev2 := 0
+
+; List of previous voiceline-index numbers for each of the sixteen voiceline-groups
+global PrevGen := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+; Welcome message with tagline(s)!
+MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`n`nPause Key: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`n`nInsert Key: Set OTA Tagline Mode.`nDel (Delete) Key: Set Civil Protection Tagline Mode.`n`nHome Key: Set Non-Tagline Mode.`n`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]`n`n`nYour taglines are:`n`n<:: OTA - " . tagline1a . "-" . tagline1b . " ::>`n`n<:: Civil Protection - " . tagline2a . "-" . tagline2b . " ::>"
 
 /*
 	/=======================================================================\
@@ -177,38 +355,40 @@ Loop, Read, ota.txt
 
 
 ; Pause program
-PgUp:: Suspend
+Pause:: Suspend
 
 ; Exits program
 End:: 
-SoundPlay, WindowsXPShutdownSoundLOL.mp3
+SoundPlay, files\WindowsXPShutdownSoundLOL.mp3
 Sleep,2000
 ExitApp
 ; Launches GMod & connects to WN
 ^F5:: LaunchGmod()
 ; Launch Hotkey Mapping
 
+; Set OTA Tagline Mode
 Ins::
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 Char := 1
-ToolTip,Set tagline to OTA...,gameWidth/2,0
+ToolTip,Setting OTA Tagline Mode...,gameWidth/2,0
 Sleep,1000
 ToolTip
 return
 
+; Set Civil Protection Tagline Mode
 Del::
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 Char := 2
-ToolTip,Set tagline to Civil Protection...,gameWidth/2,0
+ToolTip,Setting CIVIL PROTECTION Tagline Mode...,gameWidth/2,0
 Sleep,1000
 ToolTip
 return
 
-; Reload program
+; Set Non-Tagline Mode
 Home:: 
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 Char := 3
-ToolTip,Non Tagline mode...,gameWidth/2,0
+ToolTip,Setting NON-TAGLINE Mode...,gameWidth/2,0
 Sleep,1000
 ToolTip
 return
@@ -252,7 +432,7 @@ from group 6, pick a voiceline to be entered with alien in whisper mode
 ; Chat Number 1 - 'Normal'
 ^Numpad7::
 Chat := 1
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to NORMAL...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -261,7 +441,7 @@ return
 ; Chat Number 2 - 'Yell'
 ^Numpad8::
 Chat := 2
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to YELL (y)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -270,7 +450,7 @@ return
 ; Chat Number 3 - 'Whisper'
 ^Numpad9::
 Chat := 3
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to WHISPER (w)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -279,7 +459,7 @@ return
 ; Chat Number 4 - 'Radio - Normal'
 ^Numpad4::
 Chat := 4
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to RADIO NORMAL (r)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -288,7 +468,7 @@ return
 ; Chat Number 5 - 'Radio - Yell'
 ^Numpad5::
 Chat := 5
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to RADIO YELL (ry)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -297,7 +477,7 @@ return
 ; Chat Number 6 - 'Radio - Whisper'
 ^Numpad6::
 Chat := 6
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to RADIO WHISPER (rw)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -306,7 +486,7 @@ return
 ; Chat Number 7 - 'Alien - Normal'
 ^Numpad1::
 Chat := 7
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to ALIEN NORMAL (ali)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -315,7 +495,7 @@ return
 ; Chat Number 8 - 'Alien - Yell'
 ^Numpad2::
 Chat := 8
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to ALIEN YELL (aliy)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -324,7 +504,7 @@ return
 ; Chat Number 9 - 'Alien - Whisper'
 ^Numpad3::
 Chat := 9
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to ALIEN WHISPER (aliw)...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -333,7 +513,7 @@ return
 ; Chat Number 10 - 'LOOC'
 ^Numpad0::
 Chat := 10
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to LOCAL OOC...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -342,7 +522,7 @@ return
 ; Chat Number 11 - 'OOC'
 ^NumpadDot::
 Chat := 11
-SoundPlay, off3.wav
+SoundPlay, files\off3.wav
 ToolTip,Set chatmode to GLOBAL OOC...,gameWidth/2,0
 Sleep,1000
 ToolTip
@@ -383,7 +563,7 @@ Numpad4::OTA(9, Chat, Char)
 Numpad5::OTA(10, Chat, Char)
 
 ; Number 11 - 'Cleaned, contained, sector control, secure, delivered'
-^NumpadAdd::OTA(11, Chat, Char)
+NumpadAdd::OTA(11, Chat, Char)
 
 ; Number 12 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
 Numpad0::OTA(12, Chat, Char)
@@ -431,6 +611,8 @@ Numpad9::OTA(16, Chat, Char)
 
 	; Looks spooky but all it does is show the Hotkey layout lol
 Run, %A_ScriptDir%\AutoHotKeyMap.exe %A_ScriptFullPath%
+; Welcome message with tagline(s)!
+MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`n`nPause Key: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`n`nInsert Key: Set OTA Tagline Mode.`nDel (Delete) Key: Set Civil Protection Tagline Mode.`n`nHome Key: Set Non-Tagline Mode.`n`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]`n`n`nYour taglines are:`n`n<:: OTA - " . tagline1a . "-" . tagline1b . " ::>`n`n<:: Civil Protection - " . tagline2a . "-" . tagline2b . " ::>"
 return
 
 /*
@@ -449,7 +631,7 @@ return
 
 Example of a good formatted list:
 
-ota.txt:
+%A_WorkingDir%\voicelines\ota.txt:
 apply,affirmative,sightlines
 copy,copy that,boomer
 bouncer,69 erp
@@ -481,7 +663,7 @@ P := 0
 ; could just use OTAVoicelines.MaxIndex() but P is good since it spells out "ERP" haha lmao
 
 
-Loop, Read, %A_AhkPath%\ota.txt
+Loop, Read, %A_AhkPath%\%A_WorkingDir%\voicelines\ota.txt
 {
 	Loop, parse, A_LoopReadLine, %A_Comma%
 	{
@@ -581,7 +763,7 @@ MMR(Group)
 	If (E < 0)
 	{
 		MsgBox % "bruh u did not load in any voice lines lmfao moron L L L L L | Debug: " . E ; . R . P
-		SoundPlay,Error.mp3
+		SoundPlay, files\Error.mp3
 		return "[ERROR 1] "
 	}
 
@@ -603,9 +785,35 @@ MMR(Group)
 		return "[ERROR 0] "
 	}
 	*/
-	; because arrays start from 0
+	; because AHK arrays start from 1
 	SlashRoll := 1
 	Random, SlashRoll, 1, E
+
+	; Prev1 is the voiceline group
+	; Prev2 is the previous voiceline index number thingyz
+
+	;if (Group == Prev1 and SlashRoll == Prev2) ; If current voiceline is the same as the previous voiceline and 
+	
+	PrevNum := 0
+	;MsgBox % PrevNum
+	PrevNum := PrevGen[Group]
+	;MsgBox % PrevNum
+
+	; Checks for consequetive repeats of voicelines per group of voicelines
+	if (SlashRoll == PrevNum)
+	{
+		while (SlashRoll == PrevNum)
+		{
+			Random, SlashRoll, 1, E
+		}
+	}
+
+	; Sets group's previous randomly generated voiceline index
+	PrevGen[Group] := SlashRoll
+
+	;Prev1 := Group
+	;Prev2 := SlashRoll
+
 	;rand debug test
 	/*
 	X := ListItem(1, Barack)
@@ -684,7 +892,7 @@ Cohesion(Chat)
 	if (Chat < 0)
 	{
 		ToolTip,somehow u bypassed the first check for a non-positive chat lmao...,gameWidth/2,0
-		SoundPlay,Error.mp3
+		SoundPlay, files\Error.mp3
 		return 100
 	}
 	if (Chat == 1)
@@ -734,7 +942,7 @@ Cohesion(Chat)
 	if (Chat > 11)
 	{
 		ToolTip,bruh chat type higher than eleven...,gameWidth/2,0
-		SoundPlay,Error.mp3
+		SoundPlay, files\Error.mp3
 		return 200
 	}
 }
@@ -749,10 +957,12 @@ Cohesion(Chat)
 	\=======================================================================/
 */
 
+
+
 OTA(Group, Chat, Char)
 {
 	
-	Menu,Tray,Icon, GmodActive.ico
+	Menu,Tray,Icon, files\GmodActive.ico
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
 	;FormatTime, timeString, A_NowUTC,hh:mm:ss tt
 
@@ -762,14 +972,14 @@ OTA(Group, Chat, Char)
 	if (Group < 0)
 	{
 		ToolTip,wtf u somehow entered a negative number for VC group u headass...,gameWidth/2,0
-		SoundPlay,Error.mp3
+		SoundPlay, files\Error.mp3
 		return 1
 	} 
 
 	if (Chat < 0)
 	{
 		ToolTip,wtf u somehow entered a negative number for chat-type u headass...,gameWidth/2,0
-		SoundPlay,Error.mp3
+		SoundPlay, files\Error.mp3
 		return 2
 	}
 
@@ -779,22 +989,21 @@ OTA(Group, Chat, Char)
 	
 /*
 	;R -= 1
-	R1 := "Hurricane"
-	;R2 := "1"
-	R2 := "unit"y/w Hurricane;1;unit;flare down
+	R1 := "TAGLINE"
+	;R2 := "UNIT NUMBER"
+	R2 := "unit"
 */
+	if (Char == 1)
+	{
+		R1 := Ra1
+		R2 := Ra2
+		R3 := Ra3	
+	}
 	if (Char == 2)
 	{
-		R1 := ""
-		R3 := ""
-		R2 := ""
-		
-	}
-	else
-	{
-		R1 := ""
-		R3 := ""
-		R2 := ""
+		R1 := Rb1
+		R2 := Rb2
+		R3 := Rb3
 	}
 
 	P := MMR(R)
@@ -821,7 +1030,7 @@ OTA(Group, Chat, Char)
 	;VC=% E . R1 . ";" . R2 . ";" . P
 	;VC=% P
 
-	if (char != 3)
+	if (Char != 3)
 	{
 		VC =% P
 	
@@ -835,8 +1044,8 @@ OTA(Group, Chat, Char)
 		SendInput,%E%
 		SendInput,%R1%
 		SendInput,;
-		SendInput,%R3%;
-		SendInput,%R2%
+		SendInput,%R2%;
+		SendInput,%R3%
 		SendInput,;
 		SendInput,%VC%
 		SendInput,{Enter}
@@ -857,7 +1066,7 @@ OTA(Group, Chat, Char)
 	SendInput, %P%{Enter}
 	*/
 	
-	Menu,Tray,Icon, Gmod.ico
+	Menu,Tray,Icon, files\Gmod.ico
 	ToolTip
 	return
 
@@ -892,13 +1101,13 @@ RepositionGameWindow(){
 
 /*
 SoundTest(){
-	SoundPlay,Error.mp3
+	SoundPlay, files\Error.mp3
 	Sleep,500
-	SoundPlay,MacStartup.mp3
+	SoundPlay, files\MacStartup.mp3
 	Sleep,500
-	SoundPlay,WindowsXPStartupSoundLOL.mp3
+	SoundPlay, files\WindowsXPStartupSoundLOL.mp3
 	Sleep,5500
-	SoundPlay,Bruh.mp3
+	SoundPlay, files\Bruh.mp3
 	return
 }
 */
@@ -982,7 +1191,7 @@ CheckForChatBox(closeChat:=true){ ;Checks to see if chat box is active, returnin
 
 Amputate()
 { 
-	Menu,Tray,Icon, GmodActive.ico
+	Menu,Tray,Icon, files\GmodActive.ico
 	WinGetActiveStats,gameTitle,gameWidth,gameHeight,gameX,gameY
 	FormatTime, timeString, A_NowUTC,hh:mm:ss tt
 
@@ -994,7 +1203,7 @@ Amputate()
 	} until CheckForChatBox(false)
 
 	SendInput,%ampMessageString%{Enter}
-	Menu,Tray,Icon, Gmod.ico
+	Menu,Tray,Icon, files\Gmod.ico
 	ToolTip
 	return
 }
