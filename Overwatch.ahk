@@ -5,7 +5,7 @@
 Overwatch Automated Voiceliner (Lite) by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
 Modified to be compatible with a 1920x1080 game size.
 
-v2.02
+v2.04
 
 
                         .8 
@@ -53,7 +53,7 @@ references are satirical and only for entertainment
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 2.02
+Version = 2.04
 Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Release v%Version%
 
 /*
@@ -361,8 +361,9 @@ Pause:: Suspend
 
 ; Exits program
 End:: 
+ToolTip,Thank you for using the OAV! Shutting down...,gameWidth/2,0
 SoundPlay, files\WindowsXPShutdownSoundLOL.mp3
-Sleep,2000
+Sleep,2500
 ExitApp
 ; Launches GMod & connects to WN
 ^F5:: LaunchGmod()
@@ -498,7 +499,7 @@ return
 ^Numpad2::
 Chat := 8
 SoundPlay, files\off3.wav
-ToolTip,Set chatmode to ALIEN YELL (aliy)...,gameWidth/2,0
+ToolTip,Set chatmode to ALIEN YELL (yali)...,gameWidth/2,0
 Sleep,1000
 ToolTip
 return
@@ -507,7 +508,7 @@ return
 ^Numpad3::
 Chat := 9
 SoundPlay, files\off3.wav
-ToolTip,Set chatmode to ALIEN WHISPER (aliw)...,gameWidth/2,0
+ToolTip,Set chatmode to ALIEN WHISPER (wali)...,gameWidth/2,0
 Sleep,1000
 ToolTip
 return
@@ -927,11 +928,11 @@ Cohesion(Chat)
 	}
 	if (Chat == 8)
 	{
-		return "/aliy "
+		return "/yali "
 	}
 	if (Chat == 9)
 	{
-		return "/aliw "
+		return "/wali "
 	}
 	if (Chat == 10)
 	{
