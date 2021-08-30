@@ -6,7 +6,7 @@
 Overwatch Automated Voiceliner (Lite) by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
 Modified to be compatible with a 1920x1080 game size.
 
-v1.69
+v1.75.420
 
 
                         .8 
@@ -54,7 +54,7 @@ references are satirical and only for entertainment
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 1.69
+Version = 1.75.420
 Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Pre-Release (Lite) v.%Version%
 
 /*
@@ -140,6 +140,10 @@ MsgBox, 36, Overwatch Automated Voiceliner by Tim Cook,Do you understand & agree
 Chat := 4
 OTAVCs := 0
 ; Group := 14
+R1 := ""
+R3 := ""
+R2 := ""
+Char := 1
 
 
 OTAVoicelines := [] ; Overwatch Deployment
@@ -173,12 +177,8 @@ Loop, Read, ota.txt
 
 
 ; Pause program
-PgUp::
-Pause
-Suspend
-return
-; Reload program
-Home:: Reload
+PgUp:: Suspend
+
 ; Exits program
 End:: 
 SoundPlay, WindowsXPShutdownSoundLOL.mp3
@@ -187,6 +187,31 @@ ExitApp
 ; Launches GMod & connects to WN
 ^F5:: LaunchGmod()
 ; Launch Hotkey Mapping
+
+Ins::
+SoundPlay, off3.wav
+Char := 1
+ToolTip,Set tagline to OTA...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
+
+Del::
+SoundPlay, off3.wav
+Char := 2
+ToolTip,Set tagline to Civil Protection...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
+
+; Reload program
+Home:: 
+SoundPlay, off3.wav
+Char := 3
+ToolTip,Non Tagline mode...,gameWidth/2,0
+Sleep,1000
+ToolTip
+return
 
 
 ;Roleplay hotkeys.
@@ -328,46 +353,46 @@ return
 
 
 ; Number 1 - 'Suppressing, go sharp, prosecuting, engaging, cover'
-Numpad2::OTA(1, Chat)
+Numpad2::OTA(1, Chat, Char)
 
 ; Number 2 - 'Contact, contact confirm, contact confirm2, target my radial, target 1, go sharp2, viscon'
-Numpad1::OTA(2, Chat)
+Numpad1::OTA(2, Chat, Char)
 
 ; Number 3 - 'Closing, inbound, move in, cover me, unit closing, unit in'
-Numpad3::OTA(3, Chat)
+Numpad3::OTA(3, Chat, Char)
 
 ; Number 4 - 'Lost contact, motion check, stay alert, team deployed, cleanup, ready weapons, ready extractors, ready charges, fix sight lines, contain proceed'
-NumpadDot::OTA(4, Chat)
+NumpadDot::OTA(4, Chat, Char)
 
 ; Number 5 - 'One down, heavy resistance, request reinforcement, harden position'
-NumpadDiv::OTA(5, Chat)
+NumpadDiv::OTA(5, Chat, Char)
 
 ; Number 6 - 'Extractor away, extractor live, flash flash flash, flush'
-Numpad7::OTA(6, Chat)
+Numpad7::OTA(6, Chat, Char)
 
 ; Number 7 - 'Displace, ripcord, ripcord 2'
-NumpadMult::OTA(7, Chat)
+NumpadMult::OTA(7, Chat, Char)
 
 ; Number 8 - 'Target compromised, got him now, wrap up'
-Numpad8::OTA(8, Chat)
+Numpad8::OTA(8, Chat, Char)
 
 ; Number 9 - 'necrotics, infestation zone'
-Numpad4::OTA(9, Chat)
+Numpad4::OTA(9, Chat, Char)
 
 ; Number 10 - 'infestation zone, parasitics, parasites'
-Numpad5::OTA(10, Chat)
+Numpad5::OTA(10, Chat, Char)
 
 ; Number 11 - 'Cleaned, contained, sector control, secure, delivered'
-NumpadAdd::OTA(11, Chat)
+^NumpadAdd::OTA(11, Chat, Char)
 
 ; Number 12 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
-Numpad0::OTA(12, Chat)
+Numpad0::OTA(12, Chat, Char)
 
 ; Number 13 - 'Possible hostiles, ready weapons, prep contact, weapon off, stay alert'
-NumpadSub::OTA(13, Chat)
+NumpadSub::OTA(13, Chat, Char)
 
 ; Number 14 - 'Affirmative, affirmative2, copy, copy that'
-NumpadEnter::OTA(14, Chat)
+NumpadEnter::OTA(14, Chat, Char)
 
 /*
 Number 15, burger king footlettuce the last thing you want in your burgerking burger is someone elses foot fungus admittedly he had shoes on
@@ -375,10 +400,10 @@ Number 15, burger king footlettuce the last thing you want in your burgerking bu
 'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
 */
 ; Number 15 - 'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
-Numpad6::OTA(15, Chat)
+Numpad6::OTA(15, Chat, Char)
 
 ; Number 16 - 'Bouncer, flare down'
-Numpad9::OTA(16, Chat)
+Numpad9::OTA(16, Chat, Char)
 
 
 ; Game hotkeys.
@@ -724,9 +749,7 @@ Cohesion(Chat)
 	\=======================================================================/
 */
 
-
-
-OTA(Group, Chat)
+OTA(Group, Chat, Char)
 {
 	
 	Menu,Tray,Icon, GmodActive.ico
@@ -753,7 +776,26 @@ OTA(Group, Chat)
 	E := Cohesion(Chat)
 
 	R := Group
+	
+/*
 	;R -= 1
+	R1 := "Hurricane"
+	;R2 := "1"
+	R2 := "unit"y/w Hurricane;1;unit;flare down
+*/
+	if (Char == 2)
+	{
+		R1 := ""
+		R3 := ""
+		R2 := ""
+		
+	}
+	else
+	{
+		R1 := ""
+		R3 := ""
+		R2 := ""
+	}
 
 	P := MMR(R)
 	
@@ -776,18 +818,40 @@ OTA(Group, Chat)
 			g. then press enter key
 	*/
 
-	VC=% E . P
+	;VC=% E . R1 . ";" . R2 . ";" . P
+	;VC=% P
 
+	if (char != 3)
+	{
+		VC =% P
+	
 	; ---
-	
-	Loop {
-		SendInput,y
-		ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
-		Sleep,100
-	} until CheckForChatBox(false)
-	
-	SendInput,%VC%{Enter}
-	
+
+		Loop {
+			SendInput,y
+			ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
+			Sleep,100
+		} until CheckForChatBox(false)
+		SendInput,%E%
+		SendInput,%R1%
+		SendInput,;
+		SendInput,%R3%;
+		SendInput,%R2%
+		SendInput,;
+		SendInput,%VC%
+		SendInput,{Enter}
+	}
+	else
+	{
+		VC =% E . P
+		Loop {
+			SendInput,y
+			ToolTip,Opening chatbox (Attempt %A_Index%)...,gameWidth/2,0
+			Sleep,100
+		} until CheckForChatBox(false)
+		SendInput,%VC%{Enter}
+	}
+
 	/*
 	SendInput, %E%
 	SendInput, %P%{Enter}
@@ -808,7 +872,7 @@ OTA(Group, Chat)
 	\=======================================================================/
 */
 
-; insert Protec(Group, Chat) thingy here [TBA]
+; insert Protec(Group, Chat, Char) thingy here [TBA]
 
 
 /*
