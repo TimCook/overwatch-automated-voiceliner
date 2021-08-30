@@ -17,11 +17,15 @@ the three.ahk files (Overwatch.ahk, Extra.ahk, List.ahk) and then use a installe
 by right-clicking Overwatch.ahk to compile as a .exe and/or run script as-is 
 (https://www.autohotkey.com/download/ahk-install.exe)
 
+---
+
 hotkeys:
 
-To pause/halt program, press "Page Up"
+To pause/halt program, press the "Pause" key on your keyboard. (No sound effect for un/pausing)
 
-To exit program, press "End"
+To exit program, press "End"!
+
+To view help message & a bit buggy hotkey mapping pop-up thingy, press "Ctrl + F7"!
 
 ```
 ; Chat Hotkeys (to set mode of communication from 1 to 11)
