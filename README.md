@@ -1,10 +1,11 @@
 # overwatch-automated-voiceliner
 swag
 
-To use:
-1. Download "Overwatch.exe" from Releases tab or in main folder above.
-2. Run "Overwatch.exe"
-3. Done lol
+HOW TO USE:
+1. Download "overwatch-automated-voiceliner-by-tim-cook-version-2-02.zip" below!
+2. Extract the Zip file to its own folder!
+3. Run "Overwatch Automated Voiceliner by Tim Cook - Version 2.02.exe"!
+4. Enjoy!
 
 EDIT: Download the v1.69-Lite version if Chrome is FALSELY saying its a virus, smh smh
 
