@@ -2,7 +2,7 @@
 swag
 
 HOW TO USE:
-1. Download the latest release Zip file from [Realses](https://github.com/TimCook/overwatch-automated-voiceliner/releases)!
+1. Download the latest release Zip file from [Releases](https://github.com/TimCook/overwatch-automated-voiceliner/releases)!
 2. Extract the Zip file to its own folder!
 3. Run "Overwatch Automated Voiceliner by Tim Cook - Version 2.02.exe"!
 4. Enjoy!
