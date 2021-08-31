@@ -5,7 +5,7 @@
 Overwatch Automated Voiceliner (Lite) by Tim Cook, GitHub user TrevorLaneRay, AHK User Laszlo, GitHub user NickelM, Rseding91, and GitHub user shajul.
 Modified to be compatible with a 1920x1080 game size.
 
-v2.05
+v3.00
 
 
                         .8 
@@ -53,7 +53,7 @@ references are satirical and only for entertainment
 #SingleInstance,force
 #InstallKeybdHook
 #InstallMouseHook
-Version = 2.05
+Version = 3.00
 Menu,Tray,Tip,Overwatch Automated Voiceliner by Tim Cook - Release v%Version%
 
 /*
@@ -76,7 +76,7 @@ IfNotExist, Gmod.ico
 IfNotExist, %A_WorkingDir%\files\Gmod.ico
 {
 	SoundPlay, files\Bruh.mp3
-	MsgBox % "[ERROR 001] It appears that either the 'files' folder and/or the 'Gmod.ico' icon file within /files/ is or are missing!`nPlease check if you have extracted the program files to a folder!"
+	MsgBox % "[ERROR 001] It appears that either the 'files' folder and/or the 'Gmod.ico' icon file within /files/ is or are missing!`n`nPlease check if you have extracted the program files to a folder!`n`nYou must download & extract the other stuff (the Files and Voicelines folders), not just the .exe lolol"
 	Sleep,2000
 	ExitApp
 }
@@ -150,6 +150,7 @@ Chat := 4
 ; Default set to Non-Tagline Mode (Press Insert to set OTA mode & Press Del to set Civil Protection mode. Press Home to set non-tagline mode.)
 
 Char := 3
+global TagSetting := 0
 
 global tagline1a := "Attention"
 global tagline1b := "Overwatch"
@@ -343,11 +344,14 @@ global Rb3 := "functionary"
 ;global Prev1 := 0
 ;global Prev2 := 0
 
-; List of previous voiceline-index numbers for each of the sixteen voiceline-groups
-global PrevGen := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+; List of previous OTA voiceline-index numbers for each of the sixteen voiceline-groups
+global PrevGen1 := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+; List of previous Civil Protection voiceline-index numbers for each of the twenty-three voiceline-groups
+global PrevGen2 := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 ; Welcome message with tagline(s)!
-MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`n`nPause Key: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`n`nInsert Key: Set OTA Tagline Mode.`nDel (Delete) Key: Set Civil Protection Tagline Mode.`n`nHome Key: Set Non-Tagline Mode.`n`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]`n`n`nYour taglines are:`n`n<:: OTA - " . tagline1a . "-" . tagline1b . " ::>`n`n<:: Civil Protection - " . tagline2a . "-" . tagline2b . " ::>"
+MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`n`nPause Key: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`n`nInsert Key: Set OTA VOICELINES Mode.`nDel (Delete) Key: Set Civil Protection VOICELINES Mode.`n`nHome Key: Toggle Tagline DISPLAY Modes.`n`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]`n`n`nYour taglines are:`n`n<:: OTA - " . tagline1a . "-" . tagline1b . " ::>`n`n<:: Civil Protection - " . tagline2a . "-" . tagline2b . " ::>"
 
 /*
 	/=======================================================================\
@@ -369,30 +373,30 @@ ExitApp
 ^F5:: LaunchGmod()
 ; Launch Hotkey Mapping
 
-; Set OTA Tagline Mode
+; Set OTA Voicelines Mode
 Ins::
 SoundPlay, files\off3.wav
 Char := 1
-ToolTip,Setting OTA Tagline Mode...,gameWidth/2,0
-Sleep,1000
+ToolTip,Switching to OTA voicelines...,gameWidth/2,0
+Sleep,1500
 ToolTip
 return
 
-; Set Civil Protection Tagline Mode
+; Set Civil Protection Voicelines Mode
 Del::
 SoundPlay, files\off3.wav
 Char := 2
-ToolTip,Setting CIVIL PROTECTION Tagline Mode...,gameWidth/2,0
-Sleep,1000
+ToolTip,Switching to CIVIL PROTECTION voicelines...,gameWidth/2,0
+Sleep,1500
 ToolTip
 return
 
-; Set Non-Tagline Mode
+; Toggle Tagline DISPLAY Mode
 Home:: 
 SoundPlay, files\off3.wav
 Char := 3
 ToolTip,Setting NON-TAGLINE Mode...,gameWidth/2,0
-Sleep,1000
+Sleep,3000
 ToolTip
 return
 
@@ -536,46 +540,46 @@ return
 
 
 ; Number 1 - 'Suppressing, go sharp, prosecuting, engaging, cover'
-Numpad2::OTA(1, Chat, Char)
+Numpad2::Dispatch(1, Chat, Char)
 
 ; Number 2 - 'Contact, contact confirm, contact confirm2, target my radial, target 1, go sharp2, viscon'
-Numpad1::OTA(2, Chat, Char)
+Numpad1::Dispatch(2, Chat, Char)
 
 ; Number 3 - 'Closing, inbound, move in, cover me, unit closing, unit in'
-Numpad3::OTA(3, Chat, Char)
+Numpad3::Dispatch(3, Chat, Char)
 
 ; Number 4 - 'Lost contact, motion check, stay alert, team deployed, cleanup, ready weapons, ready extractors, ready charges, fix sight lines, contain proceed'
-NumpadDot::OTA(4, Chat, Char)
+NumpadDot::Dispatch(4, Chat, Char)
 
 ; Number 5 - 'One down, heavy resistance, request reinforcement, harden position'
-NumpadDiv::OTA(5, Chat, Char)
+NumpadDiv::Dispatch(5, Chat, Char)
 
 ; Number 6 - 'Extractor away, extractor live, flash flash flash, flush'
-Numpad7::OTA(6, Chat, Char)
+Numpad7::Dispatch(6, Chat, Char)
 
 ; Number 7 - 'Displace, ripcord, ripcord 2'
-NumpadMult::OTA(7, Chat, Char)
+NumpadMult::Dispatch(7, Chat, Char)
 
 ; Number 8 - 'Target compromised, got him now, wrap up'
-Numpad8::OTA(8, Chat, Char)
+Numpad8::Dispatch(8, Chat, Char)
 
 ; Number 9 - 'necrotics, infestation zone'
-Numpad4::OTA(9, Chat, Char)
+Numpad4::Dispatch(9, Chat, Char)
 
 ; Number 10 - 'infestation zone, parasitics, parasites'
-Numpad5::OTA(10, Chat, Char)
+Numpad5::Dispatch(10, Chat, Char)
 
 ; Number 11 - 'Cleaned, contained, sector control, secure, delivered'
-NumpadAdd::OTA(11, Chat, Char)
+NumpadAdd::Dispatch(11, Chat, Char)
 
 ; Number 12 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
-Numpad0::OTA(12, Chat, Char)
+Numpad0::Dispatch(12, Chat, Char)
 
 ; Number 13 - 'Possible hostiles, ready weapons, prep contact, weapon off, stay alert'
-NumpadSub::OTA(13, Chat, Char)
+NumpadSub::Dispatch(13, Chat, Char)
 
 ; Number 14 - 'Affirmative, affirmative2, copy, copy that'
-NumpadEnter::OTA(14, Chat, Char)
+NumpadEnter::Dispatch(14, Chat, Char)
 
 /*
 Number 15, burger king footlettuce the last thing you want in your burgerking burger is someone elses foot fungus admittedly he had shoes on
@@ -583,10 +587,144 @@ Number 15, burger king footlettuce the last thing you want in your burgerking bu
 'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
 */
 ; Number 15 - 'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
-Numpad6::OTA(15, Chat, Char)
+Numpad6::Dispatch(15, Chat, Char)
 
 ; Number 16 - 'Bouncer, flare down'
-Numpad9::OTA(16, Chat, Char)
+Numpad9::Dispatch(16, Chat, Char)
+
+
+; Civil Protection Voiceline Group Hotkeys (Organized by Tim Cook [TOOK THREE HOURS)
+
+
+/*
+
+---
+
+LEGEND:
+
+CIVIL PROTECTION VOICE-LINE GROUPS [~300 Voicelines] (!NUM# = ALT + NUM#)
+1. NUM / {UNIT STATUS: ON-DUTY}
+2. !NUM / {UNIT STATIS: OFF-DUTY}
+
+3. NUM * {INQUIRE: REPORT REQUEST <TO OTHERS>}
+4. !NUM * {CODE RED ALERT: REPORT EMERGENCY <FOR SELF>}
+
+5. NUM (-) [Dash] {CLEAR STATUS <NON-LOCATION SPECIFIC>}
+6. !NUM (-) [Dash or alternatively NUM 9] {CLEAR STATUS <LOCATION SPECIFIC>}
+
+7. !NUM 7 {SITUATIONAL STATUS: UNIT RESPONSE}
+8. !NUM 7 {UNIT ARRIVED}
+
+9. !NUM 8 {ANTI-ROBOCOP VOCAL SUPPLEMENTION <CONVERSATIONAL>}
+10. !NUM 8 {ANTI-ROBOCOP VOCAL SUPPLEMENTATION <REACTIONARY>}
+
+11. !NUM 4 {SUBJECT INSTRUCTION: FIRST WARN}
+
+12. !NUM 5 {SUBJECT INSTRUCTION: SECOND WARN}
+
+13. !NUM 6 {SUBJECT INSTRUCTION: POST-SECOND WARN / ACTION RESPONSES}
+
+14. !NUM 1 {SUBJECT INSTRUCTION: HALT}
+
+15. !NUM 2 {SUBJECT STATUS: EVASION}
+
+16. !NUM 3 {SUBJECT STATUS: EVADED}
+
+17. !NUM 3 {SUBJECT STATUS: UNCOVERED / FOUND}
+
+18. !NUM 0 {SITUATION: DISTURBANCE}
+19. !NUM 0 {SITUATION: XEN-BASED DISTURBANCE}
+
+20. !NUM DOT {PRIORITY ALERT: ASSAULT ON FUNCTIONARIES}
+21. !NUM DOT {PRIORITY ALERT: HOSTILE FIREFIGHT / ANTI-CIVIL INCURSION}
+
+22. !NUM ADD (+) {REPLY: YES / COPY}
+23. !NUM ADD (+) {REPLY: NEGATIVE / ELABORATE}
+
+---
+
+*/
+
+/*
+
+Multi-Dimensional <Of types of voicelines> Voiceline Approaches:
+
+Approach #1: Create unique numpad keys for either and both OTA / Civil Protection
+Approach #2: Edit shared numpad keys to differentiate voicelines based on global variable(s), e.g. Char
+
+AA: A #1 - Approach #1, in-progress [206]
+
+*/
+
+
+; 1. NUM / {UNIT STATUS: ON-DUTY}
+Numpad::Dispatch(, Chat, Char)
+
+; 2. !NUM / {UNIT STATIS: OFF-DUTY}
+Numpad::Dispatch(, Chat, Char)
+
+; 3. NUM * {INQUIRE: REPORT REQUEST <TO OTHERS>}
+Numpad::Dispatch(, Chat, Char)
+
+; 4. !NUM * {CODE RED ALERT: REPORT EMERGENCY <FOR SELF>}
+Numpad::Dispatch(, Chat, Char)
+
+; 5. NUM (-) [Dash] {CLEAR STATUS <NON-LOCATION SPECIFIC>}
+Numpad::Dispatch(, Chat, Char)
+
+; 6. !NUM (-) [Dash or alternatively NUM 9] {CLEAR STATUS <LOCATION SPECIFIC>}
+Numpad::Dispatch(, Chat, Char)
+
+; 7. !NUM 7 {SITUATIONAL STATUS: UNIT RESPONSE}
+Numpad::Dispatch(, Chat, Char)
+
+; 8. !NUM 7 {UNIT ARRIVED}
+Numpad::Dispatch(, Chat, Char)
+
+; 9. !NUM 8 {ANTI-ROBOCOP VOCAL SUPPLEMENTION <CONVERSATIONAL>}
+Numpad::Dispatch(, Chat, Char)
+
+; 10. !NUM 8 {ANTI-ROBOCOP VOCAL SUPPLEMENTATION <REACTIONARY>}
+Numpad::Dispatch(, Chat, Char)
+
+; 11. !NUM 4 {SUBJECT INSTRUCTION: FIRST WARN}
+Numpad::Dispatch(, Chat, Char)
+
+; 12. !NUM 5 {SUBJECT INSTRUCTION: SECOND WARN}
+Numpad::Dispatch(, Chat, Char)
+
+; 13. !NUM 6 {SUBJECT INSTRUCTION: POST-SECOND WARN / ACTION RESPONSES}
+Numpad::Dispatch(, Chat, Char)
+
+; 14. !NUM 1 {SUBJECT INSTRUCTION: HALT}
+Numpad::Dispatch(, Chat, Char)
+
+; 15. !NUM 2 {SUBJECT STATUS: EVASION}
+Numpad::Dispatch(, Chat, Char)
+
+; 16. !NUM 3 {SUBJECT STATUS: EVADED}
+Numpad::Dispatch(, Chat, Char)
+
+; 17. !NUM 3 {SUBJECT STATUS: UNCOVERED / FOUND}
+Numpad::Dispatch(, Chat, Char)
+
+; 18. !NUM 0 {SITUATION: DISTURBANCE}
+Numpad::Dispatch(, Chat, Char)
+
+; 19. !NUM 0 {SITUATION: XEN-BASED DISTURBANCE}
+Numpad::Dispatch(, Chat, Char)
+
+; 20. !NUM DOT {PRIORITY ALERT: ASSAULT ON FUNCTIONARIES}
+Numpad::Dispatch(, Chat, Char)
+
+; 21. !NUM DOT {PRIORITY ALERT: HOSTILE FIREFIGHT / ANTI-CIVIL INCURSION}
+Numpad::Dispatch(, Chat, Char)
+
+; 22. !NUM ADD (+) {REPLY: YES / COPY}
+Numpad::Dispatch(, Chat, Char)
+
+; 23. !NUM ADD (+) {REPLY: NEGATIVE / ELABORATE}
+Numpad::Dispatch(, Chat, Char)
 
 
 ; Game hotkeys.
@@ -613,9 +751,13 @@ Numpad9::OTA(16, Chat, Char)
 */
 
 	; Looks spooky but all it does is show the Hotkey layout lol
-Run, %A_ScriptDir%\files\AutoHotKeyMap.exe %A_ScriptFullPath%
+IfExist, %A_ScriptDir%\files\AutoHotKeyMap.exe
+	Run, %A_ScriptDir%\files\AutoHotKeyMap.exe %A_ScriptFullPath%
+
+IfNotExist, %A_ScriptDir%\files\AutoHotKeyMap.exe
+	MsgBox % "Looks like the AutoHotKeyMap.exe was not found; perhaps you should check that all files from the current release Zip file thingy was properly extracted in their folder(s)!"
 ; Welcome message with tagline(s)!
-MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`n`nPause Key: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`n`nInsert Key: Set OTA Tagline Mode.`nDel (Delete) Key: Set Civil Protection Tagline Mode.`n`nHome Key: Set Non-Tagline Mode.`n`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]`n`n`nYour taglines are:`n`n<:: OTA - " . tagline1a . "-" . tagline1b . " ::>`n`n<:: Civil Protection - " . tagline2a . "-" . tagline2b . " ::>"
+MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`n`nPause Key: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`n`nInsert Key: Set OTA VOICELINES Mode.`nDel (Delete) Key: Set Civil Protection VOICELINES Mode.`n`nHome Key: Toggle Tagline DISPLAY Modes.`n`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]`n`n`nYour taglines are:`n`n<:: OTA - " . tagline1a . "-" . tagline1b . " ::>`n`n<:: Civil Protection - " . tagline2a . "-" . tagline2b . " ::>"
 return
 
 /*
@@ -956,13 +1098,13 @@ Cohesion(Chat)
 	/=======================================================================\
 	|Overwatch Functions
 	|For automated OTA epic memery.
-	|TBA: Modify parameters to OTA(Group, Chat, VoicelineCount)
+	|TBA: Modify parameters to Dispatch(Group, Chat, Char, VoicelineCount)
 	\=======================================================================/
 */
 
 
 
-OTA(Group, Chat, Char)
+Dispatch(Group, Chat, Char)
 {
 	
 	Menu,Tray,Icon, files\GmodActive.ico

@@ -1,0 +1,23 @@
+10-8,10-8 standing by,10-8 2,10-8 standing by2,10-8 standing by3,10-14 duty,10-14 duty2,is passive,standing by,ready judge,unit is 10-65 2,full active,is ready to go,unit is 10-65
+code 7,code 7 2
+report in,report status,report in2,report status2,report status3
+11-99,needs assistance,needs help,help,needs assistance2,i need 10-78,respond code 3,respond code 3 2,reinforcement teams,request medical,request reinforcement,request skyshield,request stimdose
+clear code 100,reporting clear,code 100,control 100 2,clear code 100 2
+clear,block holding,block holding2,sociostable,sociostable2,control 100 location,control 100,position clear
+converging,responding,responding code 2,full response,gonna take a look,in position advance,pt going in,closing,closing2,engaging,investigating,investigating 10-103,is closing,is moving,unit closing,inbound,dismounting hardpoint
+10-97,10-97 2,at checkpoint,at location report,hardpoint prosecute,in position,position at hardpoint,team deployed,team advance
+career choice,believe,could be,fascinating,feeling good,feet,figures,getting a raise,haha,hm,huh figures,new stunsticks,perks,people suck,think so,trouble
+what the,what the hell,pain2,pain4,shit,shit2
+get outta,move,move along,move back,move it,first warning,move back2,move it2,first warning2,vacate,back up2,back up
+i said move,i said move along,second warning,second warning2,verdict,keep moving
+final warning,arrest positions,warning given,prosecute malcompliant,ready prosecute2,final warning2,malcompliance,malcompliant 10-107,verdict,malcompliance2,preparing to judge2
+don't move,freeze,hold,hold it,hold it2,hands,hands up,escape,get on the ground
+running,running2,hes 148,hes 148 2,airwatch 505,subject 505,subject high speed,escapee,go sharp2,go active,there he goes
+utl suspect,10-97 goa,utl suspect2,no sign 647e,getting 647e,searching for suspect,searching for suspect2,suspect incursion,sweeping suspect,utl,report location,possible accomplice,check miscount,motion check,team deployed,unknown,unknown2,no contact,lost contact,last seen at,no movement
+closing on suspect,close on suspect,closing on suspect2,close on suspect2,got him again,is closing,got suspect one,got him now,got one accomplice,position to contain,contact confirm,contact confirm2,contain proceed,contact priority,acquiring,acquiring,hardpoint scanning,hardpoint scanning2,surrounded,i see him,match on apb,suspect 11-6,target contact at,target compromised,target my radial,viscon
+loyalty check failure,loyalty check,possible 647E,possible hostiles,possible level 3,airwatch tag,10-30 responding2,possible level 3 2,investigating 10-103,10-30 responding,10-30 responding2,preparing to judge,preparing to judge2
+bugs loose,free necrotics,infestation zone,loose parasitics,nontagged viromes,outbreak swarm,parasitics,parasites,tag bug,tag necrotic,tag parasitic,necrotics,sector overrun,outbreak
+contact 243,BOL 243,BOL 243 2,BOL 243 3,fracture in progress,adw,minor hits,415b
+10-103 tag,shots fired,34s at,ready weapons2,under fire,under fire2,heavy resistance,weapon off,full response,not secure
+copy,copy2,copy that,10-4,10-4 2,roger that,rodger that2,affirmative,affirmative2,affirmative3,affirmative4,affirmative too
+negative,negative2,10-2,10-2 2,nope
