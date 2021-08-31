@@ -1,6 +1,8 @@
 # overwatch-automated-voiceliner
 swag
 
+note: the civilprotection.txt voicelines file stuff/contents which contains the 275+ voicelines may be made public possibly soon perhaps
+
 HOW TO USE:
 1. Download the latest release Zip file from [Releases](https://github.com/TimCook/overwatch-automated-voiceliner/releases)!
 2. Extract the Zip file to its own folder!
