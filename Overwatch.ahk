@@ -285,6 +285,7 @@ IfNotExist, %A_WorkingDir%\config\OAVSettings.ini
 
 			; Confirms that tagline entering process was completed
 			IniWrite, 0, %A_WorkingDir%\config\OAVSettings.ini, Debug, test1
+			IniWrite, 0, %A_WorkingDir%\config\OAVSettings.ini, Taglines, display
 		}
 }
 
@@ -294,6 +295,7 @@ IfExist, %A_WorkingDir%\config\OAVSettings.ini
 	IniRead, tagline1b, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1b
 	IniRead, tagline2a, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2a
 	IniRead, tagline2b, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2b
+	IniRead, TagSetting, %A_WorkingDir%\config\OAVSettings.ini, Taglines, display
 }
 
 initest1 := 0
@@ -309,6 +311,7 @@ if (initest1 == 1)
 }
 
 OTAVoicelines := [] ; Overwatch Deployment
+CivilProtectionVoicelines := [] ; Civil Protection Armory
 
 /*
 ; Approach 3b
@@ -326,23 +329,48 @@ Loop, % OTAVoicelines.MaxIndex()
 ; Resuming Approach 3
 
 OTAVCs := 0
+CivilProtectionVCs := 0
 
-Loop, Read, %A_WorkingDir%\voicelines\ota.txt
+IfExist, %A_WorkingDir%\voicelines\ota.txt
 {
-	OTAVCs += 1
-	OTAVoicelines%OTAVCs% := A_LoopReadLine
+	Loop, Read, %A_WorkingDir%\voicelines\ota.txt
+	{
+		OTAVCs += 1
+		OTAVoicelines%OTAVCs% := A_LoopReadLine
+	}
+}
+
+IfNotExist, %A_WorkingDir%\voicelines\ota.txt
+{
+	MsgBox % "[ERROR 300] A OTA Voicelines .txt file was not found in the 'voicelines' folder.`n`nPlease make sure the program can access 'voicelines/ota.txt.'"
+}
+
+IfExist, %A_WorkingDir%\voicelines\civilprotection.txt
+{
+	Loop, Read, %A_WorkingDir%\voicelines\civilprotection.txt
+	{
+		CivilProtectionVCs += 1
+		CivilProtectionVoicelines%CivilProtectionVCs% := A_LoopReadLine
+	}
+}
+
+IfNotExist, %A_WorkingDir%\voicelines\civilprotection.txt
+{
+	MsgBox % "[ERROR 301] A Civil Protection Voicelines .txt file was not found in the 'voicelines' folder.`n`nPlease make sure the program can access 'voicelines/civilprotection.txt.'"
 }
 
 global Ra1 := tagline1a
 global Ra2 := tagline1b
-global Ra3 := "unit"
+; global Ra3 := "unit"
 
 global Rb1 := tagline2a
 global Rb2 := tagline2b
-global Rb3 := "functionary"
+; global Rb3 := "functionary"
 
-;global Prev1 := 0
-;global Prev2 := 0
+; global Prev1 := 0
+; global Prev2 := 0
+
+
 
 ; List of previous OTA voiceline-index numbers for each of the sixteen voiceline-groups
 global PrevGen1 := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -394,8 +422,18 @@ return
 ; Toggle Tagline DISPLAY Mode
 Home:: 
 SoundPlay, files\off3.wav
-Char := 3
-ToolTip,Setting NON-TAGLINE Mode...,gameWidth/2,0
+; Char := 3
+if (TagSetting != 0)
+{
+	TagSetting := 0
+	IniWrite, 0, %A_WorkingDir%\config\OAVSettings.ini, Taglines, display
+}
+else
+{
+	TagSetting := 1
+	IniWrite, 1, %A_WorkingDir%\config\OAVSettings.ini, Taglines, display
+}
+ToolTip,Toggling NON-TAGLINE Mode: <%TagSetting%> (1/0) [on/off]...,gameWidth/2,0
 Sleep,3000
 ToolTip
 return
@@ -536,61 +574,89 @@ ToolTip
 return
 
 
-; OTA Voiceline Hotkeys (to set from group of OTA voiceline(s))
+; OTA & Civil Protection Multi-Dimensional Voiceline "Duo-"Hotkeys (to set from group of OTA voiceline(s) AND/OR CIVIL PROTECTION Voiceline(s); Ap#2, A#1, P. - [~222])
+; Non-Repeating Self-Canonical Structure Sequence <Vigenère cipher (le chiffrage indéchiffrable)>
+;                                                : [ 5 7 13 6 8 16 9 10 15  2  1  3  12 4  11 14 ]
+; NRSCSS Key																		 : { 1 2 3  4 5 6  7 8  9   10 11 12 13 14 15 16 } 
+; A#2, A#1, P - [30019]![319##]->?#
+;
 
-
-; Number 1 - 'Suppressing, go sharp, prosecuting, engaging, cover'
-Numpad2::Dispatch(1, Chat, Char)
-
-; Number 2 - 'Contact, contact confirm, contact confirm2, target my radial, target 1, go sharp2, viscon'
-Numpad1::Dispatch(2, Chat, Char)
-
-; Number 3 - 'Closing, inbound, move in, cover me, unit closing, unit in'
-Numpad3::Dispatch(3, Chat, Char)
-
-; Number 4 - 'Lost contact, motion check, stay alert, team deployed, cleanup, ready weapons, ready extractors, ready charges, fix sight lines, contain proceed'
-NumpadDot::Dispatch(4, Chat, Char)
-
-; Number 5 - 'One down, heavy resistance, request reinforcement, harden position'
+; OTA Number #5 & Civil Protection Number #1 - 'One down, heavy resistance, request reinforcement, harden position'
 NumpadDiv::Dispatch(5, Chat, Char)
 
-; Number 6 - 'Extractor away, extractor live, flash flash flash, flush'
-Numpad7::Dispatch(6, Chat, Char)
+; Civil Protection Number #2
+!NumpadDiv::Dispatch(5, Chat, Char)
 
-; Number 7 - 'Displace, ripcord, ripcord 2'
+; OTA Number #7 & Civil Protection Number #3 - 'Displace, ripcord, ripcord 2'
 NumpadMult::Dispatch(7, Chat, Char)
 
-; Number 8 - 'Target compromised, got him now, wrap up'
-Numpad8::Dispatch(8, Chat, Char)
+; Civil Protection Number #4 - 'Displace, ripcord, ripcord 2'
+!NumpadMult::Dispatch(7, Chat, Char)
 
-; Number 9 - 'necrotics, infestation zone'
-Numpad4::Dispatch(9, Chat, Char)
-
-; Number 10 - 'infestation zone, parasitics, parasites'
-Numpad5::Dispatch(10, Chat, Char)
-
-; Number 11 - 'Cleaned, contained, sector control, secure, delivered'
-NumpadAdd::Dispatch(11, Chat, Char)
-
-; Number 12 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
-Numpad0::Dispatch(12, Chat, Char)
-
-; Number 13 - 'Possible hostiles, ready weapons, prep contact, weapon off, stay alert'
+; OTA Number #13 & Civil Protection Number #5 - 'Possible hostiles, ready weapons, prep contact, weapon off, stay alert'
 NumpadSub::Dispatch(13, Chat, Char)
 
-; Number 14 - 'Affirmative, affirmative2, copy, copy that'
-NumpadEnter::Dispatch(14, Chat, Char)
+; Civil Protection Number #6 - 'Possible hostiles, ready weapons, prep contact, weapon off, stay alert'
+!NumpadSub::Dispatch(13, Chat, Char)
+
+; OTA Number #6 & Civil Protection Number #7 - 'Extractor away, extractor live, flash flash flash, flush'
+Numpad7::Dispatch(6, Chat, Char)
+
+; Civil Protection Number #8 - 'Extractor away, extractor live, flash flash flash, flush'
+!Numpad7::Dispatch(6, Chat, Char)
+
+; OTA Number #8 & Civil Protection Number #9 - 'Target compromised, got him now, wrap up'
+Numpad8::Dispatch(8, Chat, Char)
+
+; OTA Number #16 & Civil Protection Number #10 - 'Bouncer, flare down'
+Numpad9::Dispatch(16, Chat, Char)
+
+; OTA Number #9 & Civil Protection Number #11 - 'necrotics, infestation zone'
+Numpad4::Dispatch(9, Chat, Char)
+
+; OTA Number #10 & Civil Protection Number #12 - 'infestation zone, parasitics, parasites'
+Numpad5::Dispatch(10, Chat, Char)
 
 /*
 Number 15, burger king footlettuce the last thing you want in your burgerking burger is someone elses foot fungus admittedly he had shoes on
 
 'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
 */
-; Number 15 - 'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
+; OTA Number #15 & Civil Protection Number #13 - 'Sector secure, no movement, position clear, reporting clear, report all radials, no viscon'
 Numpad6::Dispatch(15, Chat, Char)
 
-; Number 16 - 'Bouncer, flare down'
-Numpad9::Dispatch(16, Chat, Char)
+; OTA Number #2 & Civil Protection Number #14 - 'Contact, contact confirm, contact confirm2, target my radial, target 1, go sharp2, viscon'
+Numpad1::Dispatch(2, Chat, Char)
+
+; OTA Number #1 & Civil Protection Number #15 - 'Suppressing, go sharp, prosecuting, engaging, cover'
+Numpad2::Dispatch(1, Chat, Char)
+
+; OTA Number #3 & Civil Protection Number #16 - 'Closing, inbound, move in, cover me, unit closing, unit in'
+Numpad3::Dispatch(3, Chat, Char)
+
+; Civil Protection Number #17 - 'Closing, inbound, move in, cover me, unit closing, unit in'
+!Numpad3::Dispatch(3, Chat, Char)
+
+; OTA Number #12 & Civil Protection Number #18 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
+Numpad0::Dispatch(12, Chat, Char)
+
+; Civil Protection Number #19 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
+!Numpad0::Dispatch(12, Chat, Char)
+
+; OTA Number #4 & Civil Protection Number #20 - 'Lost contact, motion check, stay alert, team deployed, cleanup, ready weapons, ready extractors, ready charges, fix sight lines, contain proceed'
+NumpadDot::Dispatch(4, Chat, Char)
+
+; OTA Number #4 & Civil Protection Number #21 - 'Lost contact, motion check, stay alert, team deployed, cleanup, ready weapons, ready extractors, ready charges, fix sight lines, contain proceed'
+!NumpadDot::Dispatch(4, Chat, Char)
+
+; OTA Number #11 - 'Cleaned, contained, sector control, secure, delivered'
+NumpadAdd::Dispatch(11, Chat, Char)
+
+; OTA Number #14 & Civil Protection Number #22 - 'Affirmative, affirmative2, copy, copy that'
+NumpadEnter::Dispatch(14, Chat, Char)
+
+; OTA Number #14 & Civil Protection Number #23 - 'Affirmative, affirmative2, copy, copy that'
+!NumpadEnter::Dispatch(14, Chat, Char)
 
 
 ; Civil Protection Voiceline Group Hotkeys (Organized by Tim Cook [TOOK THREE HOURS)
@@ -616,7 +682,8 @@ CIVIL PROTECTION VOICE-LINE GROUPS [~300 Voicelines] (!NUM# = ALT + NUM#)
 8. !NUM 7 {UNIT ARRIVED}
 
 9. !NUM 8 {ANTI-ROBOCOP VOCAL SUPPLEMENTION <CONVERSATIONAL>}
-10. !NUM 8 {ANTI-ROBOCOP VOCAL SUPPLEMENTATION <REACTIONARY>}
+
+10. NUM 9 {ANTI-ROBOCOP VOCAL SUPPLEMENTATION <REACTIONARY>}
 
 11. !NUM 4 {SUBJECT INSTRUCTION: FIRST WARN}
 
@@ -656,6 +723,7 @@ AA: A #1 - Approach #1, in-progress [206]
 
 */
 
+/* Approach #1 - Pre-Start Sectionization
 
 ; 1. NUM / {UNIT STATUS: ON-DUTY}
 Numpad::Dispatch(, Chat, Char)
@@ -726,6 +794,8 @@ Numpad::Dispatch(, Chat, Char)
 ; 23. !NUM ADD (+) {REPLY: NEGATIVE / ELABORATE}
 Numpad::Dispatch(, Chat, Char)
 
+*/
+
 
 ; Game hotkeys.
 ; #IfWinActive:: Garry's Mod ahk_class Valve001 ahk_exe hl2.exe
@@ -751,13 +821,20 @@ Numpad::Dispatch(, Chat, Char)
 */
 
 	; Looks spooky but all it does is show the Hotkey layout lol
-IfExist, %A_ScriptDir%\files\AutoHotKeyMap.exe
-	Run, %A_ScriptDir%\files\AutoHotKeyMap.exe %A_ScriptFullPath%
 
 IfNotExist, %A_ScriptDir%\files\AutoHotKeyMap.exe
+	{
 	MsgBox % "Looks like the AutoHotKeyMap.exe was not found; perhaps you should check that all files from the current release Zip file thingy was properly extracted in their folder(s)!"
+	}
+
+IfExist, %A_ScriptDir%\files\AutoHotKeyMap.exe
+	{
+	Run, %A_ScriptDir%\files\AutoHotKeyMap.exe %A_ScriptFullPath%
+	}
+
 ; Welcome message with tagline(s)!
 MsgBox % "<:: Welcome to the Overwatch Automated Voiceliner, v." . Version . "! ::>`n`nSoftware is provided 'as is', without any liability or warranty. `nUse at own risk.`n`nYou should see a GMod icon that is on your Windows taskbar badge area.`n{Probably the bottom-right of your screen}`nIt represents this macro program. `n`nYou can press End to exit the program as well.`n`nHOTKEYS:`n`nPause Key: Freeze/Unfreeze the Program`nEnd: Self-Explanatory lmao`nCtrl + F5: Launch GMod (and connect to WN)`n`nInsert Key: Set OTA VOICELINES Mode.`nDel (Delete) Key: Set Civil Protection VOICELINES Mode.`n`nHome Key: Toggle Tagline DISPLAY Modes.`n`nCtrl + F7: Display Chat/Voiceline Hotkeys [buggy]`n`n`nYour taglines are:`n`n<:: OTA - " . tagline1a . "-" . tagline1b . " ::>`n`n<:: Civil Protection - " . tagline2a . "-" . tagline2b . " ::>"
+
 return
 
 /*
@@ -875,7 +952,7 @@ For idx, element in OTAVoicelines
 
 
 
-MMR(Group)
+MMR(Group, Char)
 {
 	; full array elemental # of group-array
 	;E := OTAVoicelines[Group].MaxIndex(1)
