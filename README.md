@@ -1,4 +1,4 @@
-# overwatch-automated-voiceliner
+# overwatch-automated-voiceliner v3
 swag
 
 note: the civilprotection.txt voicelines file stuff/contents which contains the 275+ voicelines may be made public possibly soon perhaps
@@ -6,19 +6,8 @@ note: the civilprotection.txt voicelines file stuff/contents which contains the 
 HOW TO USE:
 1. Download the latest release Zip file from [Releases](https://github.com/TimCook/overwatch-automated-voiceliner/releases)!
 2. Extract the Zip file to its own folder!
-3. Run "Overwatch Automated Voiceliner by Tim Cook - Version 2.02.exe"!
-4. Enjoy!
-
-EDIT: Download the v1.69-Lite version if Chrome is FALSELY saying its a virus, smh smh
-
-The overwatch.exe also automatically extracts the files in the files folder, so no worries
-Source code for files, extraction, program, et cetera., are all available to view above!
-
-I think Chrome will autodetect the file as a virus because of how C++ like injection / macro stuff functions 
-(Since hotkey macros literally are similar in technicality to keyloggers), so might be best to download
-the three.ahk files (Overwatch.ahk, Extra.ahk, List.ahk) and then use a installed AutoHotkey program to compile
-by right-clicking Overwatch.ahk to compile as a .exe and/or run script as-is 
-(https://www.autohotkey.com/download/ahk-install.exe)
+3. Run Program!
+4. Enjoy!)
 
 ---
 
