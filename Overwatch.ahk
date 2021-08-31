@@ -149,7 +149,7 @@ Chat := 4
 
 ; Default set to Non-Tagline Mode (Press Insert to set OTA mode & Press Del to set Civil Protection mode. Press Home to set non-tagline mode.)
 
-Char := 3
+Char := 1
 global TagSetting := 0
 
 global tagline1a := "Attention"
@@ -171,6 +171,9 @@ IfNotExist, %A_WorkingDir%\config\OAVSettings.ini
 			}
 		}
 		IniWrite, Tim Cook, %A_WorkingDir%\config\OAVSettings.ini, OverwatchAutomatedVoiceliner, author
+
+		IniWrite, %Version%, %A_WorkingDir%\config\OAVSettings.ini, OverwatchAutomatedVoiceliner, version
+
 		IniRead, bruh, %A_WorkingDir%\config\OAVSettings.ini, OverwatchAutomatedVoiceliner, author, moment
 		if (bruh == moment)
 		{
@@ -286,16 +289,9 @@ IfNotExist, %A_WorkingDir%\config\OAVSettings.ini
 			; Confirms that tagline entering process was completed
 			IniWrite, 0, %A_WorkingDir%\config\OAVSettings.ini, Debug, test1
 			IniWrite, 0, %A_WorkingDir%\config\OAVSettings.ini, Taglines, display
+			IniWrite, 1, %A_WorkingDir%\config\OAVSettings.ini, Taglines, defaultchar
+			IniWrite, 4, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 		}
-}
-
-IfExist, %A_WorkingDir%\config\OAVSettings.ini
-{
-	IniRead, tagline1a, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1a
-	IniRead, tagline1b, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1b
-	IniRead, tagline2a, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2a
-	IniRead, tagline2b, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2b
-	IniRead, TagSetting, %A_WorkingDir%\config\OAVSettings.ini, Taglines, display
 }
 
 initest1 := 0
@@ -308,6 +304,32 @@ if (initest1 == 1)
 	Sleep,5000
 	FileDelete, %A_WorkingDir%\config\OAVSettings.ini
 	Reload
+}
+
+IfExist, %A_WorkingDir%\config\OAVSettings.ini
+{
+	IniRead, tagline1a, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1a
+	IniRead, tagline1b, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag1b
+	IniRead, tagline2a, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2a
+	IniRead, tagline2b, %A_WorkingDir%\config\OAVSettings.ini, Taglines, tag2b
+
+	updatetest = 2.00
+
+	IniRead, updatetest, %A_WorkingDir%\config\OAVSettings.ini, OverwatchAutomatedVoiceliner, version
+
+	if (updatetest != 3.00)
+	{
+		SoundPlay, files\Bruh.mp3
+	MsgBox % "[INI DEBUG #2]`n`nLooks like your current configuration file is outdated!`n`nIt will automatically be updated for compatibility! uwu"
+		IniWrite, %Version%, %A_WorkingDir%\config\OAVSettings.ini, OverwatchAutomatedVoiceliner, version
+		IniWrite, 0, %A_WorkingDir%\config\OAVSettings.ini, Taglines, display
+		IniWrite, 1, %A_WorkingDir%\config\OAVSettings.ini, Taglines, defaultchar
+		IniWrite, 4, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
+	}
+		
+	IniRead, TagSetting, %A_WorkingDir%\config\OAVSettings.ini, Taglines, display
+	IniRead, Char, %A_WorkingDir%\config\OAVSettings.ini, Taglines, defaultchar
+	IniRead, Chat, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 }
 
 OTAVoicelines := [] ; Overwatch Deployment
@@ -370,8 +392,6 @@ global Rb2 := tagline2b
 ; global Prev1 := 0
 ; global Prev2 := 0
 
-
-
 ; List of previous OTA voiceline-index numbers for each of the sixteen voiceline-groups
 global PrevGen1 := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -405,6 +425,7 @@ ExitApp
 Ins::
 SoundPlay, files\off3.wav
 Char := 1
+IniWrite, 1, %A_WorkingDir%\config\OAVSettings.ini, Taglines, defaultchar
 ToolTip,Switching to OTA voicelines...,gameWidth/2,0
 Sleep,1500
 ToolTip
@@ -414,6 +435,7 @@ return
 Del::
 SoundPlay, files\off3.wav
 Char := 2
+IniWrite, 2, %A_WorkingDir%\config\OAVSettings.ini, Taglines, defaultchar
 ToolTip,Switching to CIVIL PROTECTION voicelines...,gameWidth/2,0
 Sleep,1500
 ToolTip
@@ -477,6 +499,7 @@ from group 6, pick a voiceline to be entered with alien in whisper mode
 ; Chat Number 1 - 'Normal'
 ^Numpad7::
 Chat := 1
+IniWrite, 1, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to NORMAL...,gameWidth/2,0
 Sleep,1000
@@ -486,6 +509,7 @@ return
 ; Chat Number 2 - 'Yell'
 ^Numpad8::
 Chat := 2
+IniWrite, 2, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to YELL (y)...,gameWidth/2,0
 Sleep,1000
@@ -495,6 +519,7 @@ return
 ; Chat Number 3 - 'Whisper'
 ^Numpad9::
 Chat := 3
+IniWrite, 3, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to WHISPER (w)...,gameWidth/2,0
 Sleep,1000
@@ -504,6 +529,7 @@ return
 ; Chat Number 4 - 'Radio - Normal'
 ^Numpad4::
 Chat := 4
+IniWrite, 4, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to RADIO NORMAL (r)...,gameWidth/2,0
 Sleep,1000
@@ -513,6 +539,7 @@ return
 ; Chat Number 5 - 'Radio - Yell'
 ^Numpad5::
 Chat := 5
+IniWrite, 5, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to RADIO YELL (ry)...,gameWidth/2,0
 Sleep,1000
@@ -522,6 +549,7 @@ return
 ; Chat Number 6 - 'Radio - Whisper'
 ^Numpad6::
 Chat := 6
+IniWrite, 6, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to RADIO WHISPER (rw)...,gameWidth/2,0
 Sleep,1000
@@ -531,6 +559,7 @@ return
 ; Chat Number 7 - 'Alien - Normal'
 ^Numpad1::
 Chat := 7
+IniWrite, 7, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to ALIEN NORMAL (ali)...,gameWidth/2,0
 Sleep,1000
@@ -540,6 +569,7 @@ return
 ; Chat Number 8 - 'Alien - Yell'
 ^Numpad2::
 Chat := 8
+IniWrite, 8, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to ALIEN YELL (yali)...,gameWidth/2,0
 Sleep,1000
@@ -549,6 +579,7 @@ return
 ; Chat Number 9 - 'Alien - Whisper'
 ^Numpad3::
 Chat := 9
+IniWrite, 9, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to ALIEN WHISPER (wali)...,gameWidth/2,0
 Sleep,1000
@@ -558,6 +589,7 @@ return
 ; Chat Number 10 - 'LOOC'
 ^Numpad0::
 Chat := 10
+IniWrite, 10, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to LOCAL OOC...,gameWidth/2,0
 Sleep,1000
@@ -567,6 +599,7 @@ return
 ; Chat Number 11 - 'OOC'
 ^NumpadDot::
 Chat := 11
+IniWrite, 11, %A_WorkingDir%\config\OAVSettings.ini, Chat, defaultchat
 SoundPlay, files\off3.wav
 ToolTip,Set chatmode to GLOBAL OOC...,gameWidth/2,0
 Sleep,1000
@@ -574,12 +607,35 @@ ToolTip
 return
 
 
+
+/*
+
 ; OTA & Civil Protection Multi-Dimensional Voiceline "Duo-"Hotkeys (to set from group of OTA voiceline(s) AND/OR CIVIL PROTECTION Voiceline(s); Ap#2, A#1, P. - [~222])
-; Non-Repeating Self-Canonical Structure Sequence <Vigenère cipher (le chiffrage indéchiffrable)>
-;                                                : [ 5 7 13 6 8 16 9 10 15  2  1  3  12 4  11 14 ]
-; NRSCSS Key																		 : { 1 2 3  4 5 6  7 8  9   10 11 12 13 14 15 16 } 
+; Non-Repeating Self-Canonical Structure Sequence <Vigenère cipher (le chiffrage indéchiffrable)>:
+
+
+; [ 5 5 7 7 13 13 6 6 8 16 9  10 15 2  1  3  3  12 12 4  4  11 14 14 ](
+; { 1 2 3 4 5  6  7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 !! 22 23 } 
+
+
+; Simplified 2nd Pairs:
+; [(5, 50), (7, 70), (13, 130), (6, 60), (3, 30), (12, 120), (4, 40), (14, 140)]
+
+; Simplified 2nd Pairs-Key:
+; [(50, 2), (70, 4), (130, 6), (60, 8), (30, 17), (120, 19), (40, 21), (140, 23)]
+
+
+; [  5 5  7 7  13 13  6 6  8 16 9  10 15 2  1  3  3  12 12  4  4  11 14 14  ](
+; {  1 50 3 70 5  130 7 60 9 10 11 12 13 14 15 16 30 18 120 20 40 !! 22 140 } 
+
+
+; NRSCSS Key)
 ; A#2, A#1, P - [30019]![319##]->?#
-;
+; {8} [30]->[31] < ({)21(}) >
+
+*/
+
+
 
 ; OTA Number #5 & Civil Protection Number #1 - 'One down, heavy resistance, request reinforcement, harden position'
 NumpadDiv::Dispatch(5, Chat, Char)
@@ -590,19 +646,19 @@ NumpadDiv::Dispatch(5, Chat, Char)
 ; OTA Number #7 & Civil Protection Number #3 - 'Displace, ripcord, ripcord 2'
 NumpadMult::Dispatch(7, Chat, Char)
 
-; Civil Protection Number #4 - 'Displace, ripcord, ripcord 2'
+; Civil Protection Number #4
 !NumpadMult::Dispatch(7, Chat, Char)
 
 ; OTA Number #13 & Civil Protection Number #5 - 'Possible hostiles, ready weapons, prep contact, weapon off, stay alert'
 NumpadSub::Dispatch(13, Chat, Char)
 
-; Civil Protection Number #6 - 'Possible hostiles, ready weapons, prep contact, weapon off, stay alert'
+; Civil Protection Number #6
 !NumpadSub::Dispatch(13, Chat, Char)
 
 ; OTA Number #6 & Civil Protection Number #7 - 'Extractor away, extractor live, flash flash flash, flush'
 Numpad7::Dispatch(6, Chat, Char)
 
-; Civil Protection Number #8 - 'Extractor away, extractor live, flash flash flash, flush'
+; Civil Protection Number #8
 !Numpad7::Dispatch(6, Chat, Char)
 
 ; OTA Number #8 & Civil Protection Number #9 - 'Target compromised, got him now, wrap up'
@@ -634,13 +690,13 @@ Numpad2::Dispatch(1, Chat, Char)
 ; OTA Number #3 & Civil Protection Number #16 - 'Closing, inbound, move in, cover me, unit closing, unit in'
 Numpad3::Dispatch(3, Chat, Char)
 
-; Civil Protection Number #17 - 'Closing, inbound, move in, cover me, unit closing, unit in'
+; Civil Protection Number #17
 !Numpad3::Dispatch(3, Chat, Char)
 
 ; OTA Number #12 & Civil Protection Number #18 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
 Numpad0::Dispatch(12, Chat, Char)
 
-; Civil Protection Number #19 - 'Request reserve, team down, request skyshield, request reinforcement, sector overrun'
+; Civil Protection Number #19
 !Numpad0::Dispatch(12, Chat, Char)
 
 ; OTA Number #4 & Civil Protection Number #20 - 'Lost contact, motion check, stay alert, team deployed, cleanup, ready weapons, ready extractors, ready charges, fix sight lines, contain proceed'
@@ -649,7 +705,7 @@ NumpadDot::Dispatch(4, Chat, Char)
 ; OTA Number #4 & Civil Protection Number #21 - 'Lost contact, motion check, stay alert, team deployed, cleanup, ready weapons, ready extractors, ready charges, fix sight lines, contain proceed'
 !NumpadDot::Dispatch(4, Chat, Char)
 
-; OTA Number #11 - 'Cleaned, contained, sector control, secure, delivered'
+; OTA Number #11 <:: Civil Protection Non-Number! ::> - 'Cleaned, contained, sector control, secure, delivered'
 NumpadAdd::Dispatch(11, Chat, Char)
 
 ; OTA Number #14 & Civil Protection Number #22 - 'Affirmative, affirmative2, copy, copy that'
@@ -952,11 +1008,11 @@ For idx, element in OTAVoicelines
 
 
 
-MMR(Group, Char)
+MMR(G, Char)
 {
 	; full array elemental # of group-array
 	;E := OTAVoicelines[Group].MaxIndex(1)
-	Obama := Group
+	Obama := G
 	/*
 	Loop %Group%
 	{
@@ -967,8 +1023,14 @@ MMR(Group, Char)
 	;OTAVCs = Group
 	;Barack := ListItem(OTAVCs, OTAVoicelines.OTAVCs)
 	;Obama -= 1
-	Barack := OTAVoicelines%Obama%
-
+	if (Char == 2)
+	{
+		Barack := CivilProtectionVoicelines%Obama%
+	}
+	else
+	{
+		Barack := OTAVoicelines%Obama%
+	}
 	;MsgBox % Barack
 
 	E := ListLen(Barack)
@@ -1017,8 +1079,18 @@ MMR(Group, Char)
 	;if (Group == Prev1 and SlashRoll == Prev2) ; If current voiceline is the same as the previous voiceline and 
 	
 	PrevNum := 0
+
 	;MsgBox % PrevNum
-	PrevNum := PrevGen[Group]
+	
+	if (Char == 2)
+	{
+		PrevNum := PrevGen2[G]
+	}
+	else
+	{
+		PrevNum := PrevGen1[G]
+	}
+	
 	;MsgBox % PrevNum
 
 	; Checks for consequetive repeats of voicelines per group of voicelines
@@ -1030,8 +1102,18 @@ MMR(Group, Char)
 		}
 	}
 
-	; Sets group's previous randomly generated voiceline index
-	PrevGen[Group] := SlashRoll
+	if (Char == 2)
+	{
+		; Sets Civil Protection VC group's previous randomly generated voiceline index
+		PrevGen2[G] := SlashRoll
+	}
+	else
+	{
+		; Sets OTA VC group's previous randomly generated voiceline index
+		PrevGen1[G] := SlashRoll
+	}
+
+		
 
 	;Prev1 := Group
 	;Prev2 := SlashRoll
@@ -1208,6 +1290,115 @@ Dispatch(Group, Chat, Char)
 	E := Cohesion(Chat)
 
 	R := Group
+
+	if (Char == 2)
+	{
+		if (Group > 22)
+		{
+			if (Group == 50)
+			{
+				R := 2
+			}
+			else if (Group == 70)
+			{
+				R := 4
+			}
+			else if (Group == 130)
+			{
+				R := 6
+			}
+			else if (Group == 60)
+			{
+				R := 8
+			}
+			else if (Group == 30)
+			{
+				R := 17
+			}
+			else if (Group == 120)
+			{
+				R := 19
+			}
+			else if (Group == 40)
+			{
+				R := 21
+			}
+			else if (Group == 140)
+			{
+				R := 23
+			}
+		}
+		else if (Group >= 5)
+		{
+			if (Group == 5)
+			{
+				R := 1
+			}
+			else if (Group == 7)
+			{
+				R := 3
+			}
+			else if (Group == 13)
+			{
+				R := 5
+			}
+			else if (Group == 6)
+			{
+				R := 7
+			}
+			else if (Group == 8)
+			{
+				R := 9
+			}
+			else if (Group == 16)
+			{
+				R := 10
+			}
+			else if (Group == 9)
+			{
+				R := 11
+			}
+			else if (Group == 10)
+			{
+				R := 12
+			}
+			else if (Group == 15)
+			{
+				R := 13
+			}
+			else if (Group == 12)
+			{
+				R := 18
+			}
+			;else if (Group == 11)
+			;{
+			;	R := bruh
+			;}
+			else if (Group == 14)
+			{
+				R := 22
+			}
+		}
+		else if (Group <= 4)
+		{
+			if (Group == 2)
+			{
+				R := 14
+			}
+			else if (Group == 1)
+			{
+				R := 15
+			}
+			else if (Group == 3)
+			{
+				R := 16
+			}
+			else if (Group == 4)
+			{
+				R := 20
+			}
+		}
+	}
 	
 /*
 	;R -= 1
@@ -1215,20 +1406,8 @@ Dispatch(Group, Chat, Char)
 	;R2 := "UNIT NUMBER"
 	R2 := "unit"
 */
-	if (Char == 1)
-	{
-		R1 := Ra1
-		R2 := Ra2
-		R3 := Ra3	
-	}
-	if (Char == 2)
-	{
-		R1 := Rb1
-		R2 := Rb2
-		R3 := Rb3
-	}
 
-	P := MMR(R)
+	P := MMR(R, Char)
 	
 	/*
 
@@ -1252,8 +1431,22 @@ Dispatch(Group, Chat, Char)
 	;VC=% E . R1 . ";" . R2 . ";" . P
 	;VC=% P
 
-	if (Char != 3)
+	if (TagSetting == 1)
 	{
+		if (Char == 1)
+		{
+			R1 := Ra1
+			R2 := Ra2
+			; R3 := Ra3	
+		}
+
+		if (Char == 2)
+		{
+			R1 := Rb1
+			R2 := Rb2
+			; R3 := Rb3
+		}
+
 		VC =% P
 	
 	; ---
@@ -1267,8 +1460,10 @@ Dispatch(Group, Chat, Char)
 		SendInput,%R1%
 		SendInput,;
 		SendInput,%R2%;
-		SendInput,%R3%
-		SendInput,;
+		/*
+		 SendInput,%R3%
+		 SendInput,;
+		*/
 		SendInput,%VC%
 		SendInput,{Enter}
 	}
